@@ -1,0 +1,85 @@
+name: fashat_al_huffaz
+description: >-
+  فسحة الحفّاظ - مكتبة الألعاب والأنشطة التربوية لحلقات تحفيظ القرآن الكريم.
+  تطبيق يعمل دون إنترنت، جميع المحتوى يُدار عبر ملفات JSON قابلة للتعديل.
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.6.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+
+  # إدارة الحالة
+  provider: ^6.1.2
+
+  # حفظ الإعدادات والمفضلة محليًا
+  shared_preferences: ^2.2.3
+
+  # فتح روابط الشرح فقط (لا يُستخدم لأي شيء آخر)
+  url_launcher: ^6.3.0
+
+  # الوصول إلى مجلدات التطبيق لاستيراد ملفات JSON
+  path_provider: ^2.1.4
+
+  # اختيار ملفات JSON لاستيرادها داخل التطبيق
+  file_picker: ^8.1.2
+
+  # تنزيل ملفات الألعاب من نسخة الويب
+  web: ^1.1.0
+
+  # قراءة ملفات وورد (docx: فك ضغط ZIP + تحليل XML)
+  archive: ^4.0.2
+  xml: ^6.5.0
+
+  cupertino_icons: ^1.0.8
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^4.0.0
+  flutter_launcher_icons: ^0.13.1
+
+# أيقونة التطبيق - بعد تثبيت Flutter نفّذ:
+# flutter pub get && dart run flutter_launcher_icons
+flutter_launcher_icons:
+  android: false
+  ios: false
+  image_path: "assets/icon/app_icon.png"
+  windows:
+    generate: true
+    image_path: "assets/icon/app_icon.png"
+    icon_size: 256
+  web:
+    generate: true
+    image_path: "assets/icon/app_icon.png"
+    background_color: "#16A34A"
+    theme_color: "#16A34A"
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    # ملفات الأقسام والفهارس
+    - assets/data/
+    # مجلد الأنشطة: أي ملف JSON يُضاف هنا يُحمّل تلقائيًا دون تعديل الكود
+    - assets/data/activities/
+    - assets/icon/
+
+  fonts:
+    - family: Tajawal
+      fonts:
+        - asset: assets/fonts/Tajawal-Light.ttf
+          weight: 300
+        - asset: assets/fonts/Tajawal-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/Tajawal-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/Tajawal-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/Tajawal-Black.ttf
+          weight: 900

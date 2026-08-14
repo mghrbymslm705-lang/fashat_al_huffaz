@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>فسحة الحفّاظ — معاينة</title>
+<style>
+  @font-face { font-family:'Tajawal'; src:url('../assets/fonts/Tajawal-Light.ttf'); font-weight:300; }
+  @font-face { font-family:'Tajawal'; src:url('../assets/fonts/Tajawal-Regular.ttf'); font-weight:400; }
+  @font-face { font-family:'Tajawal'; src:url('../assets/fonts/Tajawal-Medium.ttf'); font-weight:500; }
+  @font-face { font-family:'Tajawal'; src:url('../assets/fonts/Tajawal-Bold.ttf'); font-weight:700; }
+  @font-face { font-family:'Tajawal'; src:url('../assets/fonts/Tajawal-Black.ttf'); font-weight:900; }
+
+  * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+  :root{
+    --primary:#22C55E; --primary-dark:#16A34A; --blue:#3B82F6; --gold:#FBBF24;
+    --orange:#F97316; --purple:#8B5CF6; --pink:#EC4899; --teal:#06B6D4;
+    --bg:#F4F6F8; --surface:#FFFFFF; --text:#1F2937; --sub:#6B7280;
+  }
+  body{
+    font-family:'Tajawal', sans-serif; background:linear-gradient(135deg,#dfe9e3,#e8ecf2);
+    min-height:100vh; display:flex; align-items:center; justify-content:center; padding:24px;
+  }
+  /* إطار الهاتف */
+  .phone{
+    --fs:1;
+    width:390px; max-width:100%; height:800px; background:var(--bg);
+    border-radius:36px; box-shadow:0 30px 80px rgba(20,40,30,.35);
+    display:flex; flex-direction:column; overflow:hidden; position:relative;
+  }
+  .statusbar{ height:34px; background:#fff; display:flex; align-items:center; justify-content:space-between;
+    padding:0 22px; font-size:calc(11px * var(--fs)); font-weight:700; color:#111; flex:none; }
+  .appbar{ background:#fff; padding:14px 18px; text-align:center; font-weight:700; font-size:calc(18px * var(--fs)); flex:none; }
+
+  .screen{ flex:1; overflow-y:auto; display:none; padding:16px; }
+  .screen.active{ display:block; }
+
+  /* الترويسة الرئيسية */
+  .hdr{ display:flex; gap:12px; align-items:center; }
+  .hdr .logo{ width:56px; height:56px; border-radius:18px;
+    background:linear-gradient(135deg,var(--primary),var(--primary-dark));
+    display:flex; align-items:center; justify-content:center; font-size:calc(26px * var(--fs)); }
+  .hdr h1{ font-size:calc(22px * var(--fs)); font-weight:900; }
+  .hdr p{ font-size:calc(12px * var(--fs)); color:var(--sub); }
+
+  .banner{ margin-top:16px; background:linear-gradient(135deg,var(--gold),#F59E0B); border-radius:20px;
+    padding:16px; color:#fff; display:flex; gap:12px; align-items:center; cursor:pointer; }
+  .banner .dice{ width:52px; height:52px; border-radius:50%; background:rgba(255,255,255,.25);
+    display:flex; align-items:center; justify-content:center; font-size:calc(24px * var(--fs)); }
+  .banner b{ font-size:calc(16px * var(--fs)); font-weight:900; display:block; }
+  .banner span{ font-size:calc(11.5px * var(--fs)); line-height:1.5; display:block; margin-top:3px; }
+
+  .stats{ display:flex; gap:8px; margin-top:16px; }
+  .stat{ flex:1; background:#fff; border-radius:16px; padding:12px 4px; text-align:center; }
+  .stat .n{ font-weight:900; font-size:calc(17px * var(--fs)); }
+  .stat .l{ font-size:calc(11px * var(--fs)); color:var(--sub); }
+  .stat .ic{ font-size:calc(20px * var(--fs)); }
+
+  .sect{ display:flex; align-items:center; gap:8px; margin:18px 0 10px; }
+  .sect .bar{ width:4px; height:22px; border-radius:4px; background:var(--primary); }
+  .sect b{ font-size:calc(17px * var(--fs)); font-weight:800; }
+  .sect small{ font-size:calc(12px * var(--fs)); color:var(--sub); }
+
+  .grid{ display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  .cat{ background:#fff; border-radius:20px; overflow:hidden; cursor:pointer; box-shadow:0 4px 10px rgba(0,0,0,.04); }
+  .cat .top{ height:74px; display:flex; align-items:center; justify-content:center; font-size:calc(32px * var(--fs)); color:#fff; }
+  .cat .body{ padding:10px; }
+  .cat .body b{ font-size:calc(13px * var(--fs)); font-weight:800; display:block; line-height:1.3; }
+  .cat .body span{ font-size:calc(11px * var(--fs)); color:var(--sub); }
+
+  /* بطاقة نشاط */
+  .card{ background:#fff; border-radius:20px; overflow:hidden; margin-bottom:14px;
+    box-shadow:0 4px 10px rgba(0,0,0,.04); }
+  .card .head{ height:96px; position:relative; }
+  .card .head .big{ position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font-size:calc(44px * var(--fs)); color:rgba(255,255,255,.92); }
+  .card .heart{ position:absolute; top:8px; left:8px; background:rgba(255,255,255,.9); border-radius:50%;
+    width:34px; height:34px; display:flex; align-items:center; justify-content:center; font-size:calc(16px * var(--fs)); cursor:pointer; }
+  .card .body{ padding:12px 14px 14px; }
+  .card .title{ font-weight:800; font-size:calc(15px * var(--fs)); line-height:1.3; margin-bottom:10px; }
+  .chips{ display:flex; flex-wrap:wrap; gap:6px; }
+  .chip{ display:flex; align-items:center; gap:4px; padding:6px 10px; border-radius:12px; font-size:calc(12px * var(--fs)); font-weight:600; }
+  .card .foot{ display:flex; gap:8px; align-items:center; margin-top:12px; }
+  .watch{ flex:1; text-align:center; background:var(--primary); color:#fff; font-weight:700; font-size:calc(13px * var(--fs));
+    padding:10px; border-radius:14px; cursor:pointer; }
+  .watch.off{ background:#EEF0F3; color:#9CA3AF; }
+  .pill{ display:flex; align-items:center; gap:4px; padding:8px 10px; border-radius:14px; font-size:calc(11px * var(--fs)); font-weight:700; }
+
+  /* البحث */
+  .searchbox{ display:flex; align-items:center; gap:10px; background:#fff; border-radius:16px;
+    padding:0 14px; margin-bottom:10px; }
+  .searchbox input{ flex:1; border:none; outline:none; font-family:'Tajawal'; font-size:calc(14px * var(--fs));
+    padding:14px 0; background:transparent; color:var(--text); }
+  .count{ font-size:calc(12px * var(--fs)); color:var(--sub); margin-bottom:10px; }
+
+  /* المساعد الذكي */
+  .progress{ display:flex; justify-content:space-between; font-size:calc(12px * var(--fs)); font-weight:700; margin-bottom:6px; }
+  .progress small{ color:var(--sub); font-weight:400; }
+  .bar{ height:8px; border-radius:8px; background:rgba(0,0,0,.12); margin-bottom:16px; overflow:hidden; }
+  .bar > i{ display:block; height:100%; background:var(--primary); border-radius:8px; transition:width .3s; }
+  .qcard{ background:linear-gradient(135deg,var(--primary),var(--primary-dark)); color:#fff;
+    border-radius:20px; padding:18px; text-align:center; margin-bottom:16px; }
+  .qcard .qic{ width:64px; height:64px; border-radius:50%; background:rgba(255,255,255,.2);
+    display:flex; align-items:center; justify-content:center; font-size:calc(30px * var(--fs)); margin:0 auto 12px; }
+  .qcard h3{ font-size:calc(17px * var(--fs)); font-weight:900; }
+  .qcard p{ font-size:calc(12px * var(--fs)); opacity:.85; margin-top:6px; }
+  .opt{ background:#fff; border:1.5px solid transparent; border-radius:16px; padding:12px 14px;
+    display:flex; align-items:center; gap:10px; margin-bottom:10px; cursor:pointer; font-family:'Tajawal'; }
+  .opt .oic{ font-size:calc(20px * var(--fs)); }
+  .opt span{ flex:1; font-size:calc(14px * var(--fs)); font-weight:700; }
+  .opt.selected{ border-color:var(--primary); background:rgba(34,197,94,.1); }
+  .opt.selected .mark{ color:var(--primary); }
+  .nextrow{ display:flex; gap:10px; margin-top:8px; }
+  .next{ flex:1; background:var(--primary); color:#fff; border:none; border-radius:16px; padding:14px;
+    font-family:'Tajawal'; font-size:calc(14px * var(--fs)); font-weight:700; cursor:pointer; }
+  .next:disabled{ background:#d1d5db; cursor:not-allowed; }
+  .back{ flex:1; background:#fff; border:1.5px solid var(--primary); color:var(--primary);
+    border-radius:16px; padding:14px; font-family:'Tajawal'; font-size:calc(14px * var(--fs)); font-weight:700; cursor:pointer; }
+
+  .why{ background:rgba(251,191,36,.12); border-radius:12px; padding:10px; margin-bottom:8px; }
+  .why b{ color:#B45309; font-size:calc(11px * var(--fs)); font-weight:800; display:block; margin-bottom:4px; }
+  .why .tags{ display:flex; flex-wrap:wrap; gap:6px; }
+  .why .tag{ background:rgba(255,255,255,.7); color:#92400E; font-size:calc(10.5px * var(--fs)); padding:3px 8px; border-radius:8px; }
+
+  /* الإعدادات */
+  .setcard{ background:#fff; border-radius:16px; padding:14px; margin-bottom:12px; }
+  .setcard .ttl{ font-weight:800; font-size:calc(14px * var(--fs)); display:flex; gap:8px; align-items:center; }
+  .seg{ display:flex; gap:6px; margin-top:12px; background:#f3f4f6; border-radius:12px; padding:4px; }
+  .seg button{ flex:1; border:none; background:transparent; padding:8px; border-radius:9px;
+    font-family:'Tajawal'; font-size:calc(12px * var(--fs)); font-weight:700; cursor:pointer; color:var(--sub); }
+  .seg button.on{ background:#fff; color:var(--primary-dark); box-shadow:0 1px 4px rgba(0,0,0,.1); }
+  .chipsrow{ display:flex; flex-wrap:wrap; gap:8px; margin-top:12px; }
+  .chipsrow button{ border:1px solid #e5e7eb; background:#fff; padding:8px 12px; border-radius:999px;
+    font-family:'Tajawal'; font-size:calc(12px * var(--fs)); font-weight:700; cursor:pointer; color:var(--sub); }
+  .chipsrow button.on{ border-color:var(--primary); color:var(--primary-dark); background:rgba(34,197,94,.1); }
+  .menu{ background:#fff; border-radius:16px; padding:0 12px; margin-bottom:10px; }
+  .menu .mi{ display:flex; align-items:center; gap:12px; padding:14px 2px; border-bottom:1px solid #f3f4f6; cursor:pointer; }
+  .menu .mi:last-child{ border-bottom:none; }
+  .menu .mi .miic{ width:42px; height:42px; border-radius:12px; background:rgba(59,130,246,.12);
+    display:flex; align-items:center; justify-content:center; font-size:calc(20px * var(--fs)); color:var(--blue); }
+  .menu .mi b{ font-size:calc(14px * var(--fs)); font-weight:700; flex:1; }
+  .menu .mi .mic{ font-size:calc(12px * var(--fs)); color:#fff; background:var(--orange); border-radius:999px; padding:2px 8px; }
+  .version{ text-align:center; font-size:calc(12px * var(--fs)); color:#9CA3AF; margin:8px 0 4px; }
+
+  /* شريط التنقل */
+  .nav{ background:#fff; display:flex; padding:8px 4px 14px; flex:none; box-shadow:0 -4px 20px rgba(0,0,0,.05); }
+  .nav button{ flex:1; border:none; background:transparent; font-family:'Tajawal'; font-size:calc(10px * var(--fs));
+    color:var(--sub); display:flex; flex-direction:column; align-items:center; gap:3px; cursor:pointer; }
+  .nav button .pill2{ background:transparent; border-radius:999px; padding:4px 12px; }
+  .nav button.on{ color:var(--primary-dark); font-weight:700; }
+  .nav button.on .pill2{ background:rgba(34,197,94,.18); }
+  .nav .ic{ font-size:calc(18px * var(--fs)); }
+
+  .empty{ text-align:center; color:var(--sub); padding:40px 20px; font-size:calc(13px * var(--fs)); line-height:1.8; }
+  .empty .big{ font-size:calc(52px * var(--fs)); opacity:.5; margin-bottom:12px; }
+
+  .appbar.tabs{ display:flex; align-items:center; justify-content:space-between; }
+  .appbar .act{ font-size:calc(20px * var(--fs)); color:var(--text); }
+  .appbar .back{ font-size:calc(18px * var(--fs)); color:var(--text); cursor:pointer; background:none; border:none;
+    padding:4px 8px; font-family:'Tajawal'; font-weight:700; }
+
+  /* شريط الفلاتر */
+  .filterbar{ display:flex; align-items:center; gap:8px; background:rgba(251,191,36,.15);
+    border-radius:14px; padding:8px 12px; margin-bottom:12px; font-size:calc(12px * var(--fs)); color:#B45309; font-weight:700; }
+  .filterbar .clear{ margin-right:auto; color:#B45309; font-weight:700; cursor:pointer; border:none; background:none; font-family:'Tajawal'; }
+
+  .hint{ position:absolute; bottom:14px; left:50%; transform:translateX(-50%); background:rgba(17,24,39,.85);
+    color:#fff; font-size:calc(11px * var(--fs)); padding:8px 14px; border-radius:999px; white-space:nowrap; pointer-events:none; z-index:5; }
+
+  /* حجم الخط: مقادير متدرجة تُطبَّق عبر المتغير --fs */
+  .phone[data-fs="0.9"]{ --fs:0.9; }
+  .phone[data-fs="1.15"]{ --fs:1.15; }
+  .phone[data-fs="1.3"]{ --fs:1.3; }
+  .phone[data-fs="1.5"]{ --fs:1.5; }
+
+  /* الوضع الليلي */
+  .phone.dark{
+    --bg:#0F172A; --surface:#1F2937; --text:#F3F4F6; --sub:#9CA3AF;
+    color:var(--text);
+    box-shadow:0 30px 80px rgba(0,0,0,.55);
+  }
+  .phone.dark .statusbar{ background:#0B1220; color:#E5E7EB; }
+  .phone.dark .appbar,
+  .phone.dark .stat, .phone.dark .cat, .phone.dark .card,
+  .phone.dark .searchbox, .phone.dark .opt, .phone.dark .setcard,
+  .phone.dark .menu, .phone.dark .nav,
+  .phone.dark .seg button.on, .phone.dark .back{ background:var(--surface); }
+  .phone.dark .card .heart{ background:rgba(15,23,42,.92); }
+  .phone.dark .seg{ background:#374151; }
+  .phone.dark .seg button.on{ box-shadow:none; color:#86EFAC; }
+  .phone.dark .chipsrow button{ background:var(--surface); border-color:#374151; }
+  .phone.dark .chipsrow button.on{ color:#86EFAC; }
+  .phone.dark .watch.off{ background:#374151; color:#9CA3AF; }
+  .phone.dark .menu .mi{ border-bottom-color:#374151; }
+  .phone.dark .why{ background:rgba(251,191,36,.14); }
+  .phone.dark .why b{ color:#FBBF24; }
+  .phone.dark .why .tag{ background:rgba(15,23,42,.65); color:#FBBF24; }
+  .phone.dark .filterbar, .phone.dark .filterbar .clear{ color:#FBBF24; }
+  .phone.dark .progress .bar, .phone.dark .bar{ background:rgba(255,255,255,.15); }
+  .phone.dark .next:disabled{ background:#374151; }
+  .phone.dark .nav button.on{ color:#86EFAC; }
+  .phone.dark .version{ color:#6B7280; }
+  .phone.dark .hint{ background:rgba(243,244,246,.92); color:#111827; }
+  .phone.dark .searchbox input{ color:var(--text); }
+  .phone.dark .statusbar, .phone.dark .appbar{ background:#0F172A; }
+  .phone.dark .appbar .act, .phone.dark .appbar .back{ color:var(--text); }
+</style>
+</head>
+<body>
+
+<div class="phone" id="phone">
+  <div class="statusbar"><span>٩:٤١</span><span>📶 🔋</span></div>
+
+  <!-- ===== الرئيسية ===== -->
+  <section class="screen active" id="home">
+    <div class="hdr">
+      <div class="logo">📖</div>
+      <div>
+        <h1>فسحة الحفّاظ</h1>
+        <p>مكتبتك التربوية لحلقات القرآن</p>
+      </div>
+    </div>
+    <div class="banner" onclick="go('suggest')">
+      <div class="dice">🎲</div>
+      <div>
+        <b>اقترح لي نشاطًا</b>
+        <span>أجب عن أسئلة بسيطة وسيقترح التطبيق الأنسب من مكتبتك</span>
+      </div>
+      <span style="font-size:calc(18px * var(--fs))">←</span>
+    </div>
+    <div class="stats">
+      <div class="stat" onclick="go('home')"><div class="ic">📚</div><div class="n" id="statAct">5</div><div class="l">نشاط</div></div>
+      <div class="stat" onclick="go('home')"><div class="ic">📁</div><div class="n" id="statCat">8</div><div class="l">قسم</div></div>
+      <div class="stat" onclick="go('favs')"><div class="ic">❤️</div><div class="n" id="statFav">2</div><div class="l">مفضل</div></div>
+    </div>
+    <div class="sect"><div class="bar"></div><div><b>الأقسام</b><br><small>اختر قسمًا لاستعراض أنشطته</small></div></div>
+    <div class="grid" id="catGrid"></div>
+  </section>
+
+  <!-- ===== البحث ===== -->
+  <section class="screen" id="search">
+    <div class="appbar tabs"><span>البحث</span></div>
+    <div class="searchbox"><span>🔍</span><input id="searchInp" placeholder="ابحث عن نشاط، لعبة، مسابقة..." oninput="doSearch(this.value)"></div>
+    <div class="count" id="searchCount">0 نتيجة</div>
+    <div id="searchResults"></div>
+    <div class="empty" id="searchEmpty" style="display:none">
+      <div class="big">🔎</div>
+      <b style="color:var(--text)">ابدأ البحث</b><br>
+      اكتب اسم النشاط أو كلمة من وصفه.
+    </div>
+  </section>
+
+  <!-- ===== المفضلة ===== -->
+  <section class="screen" id="favs">
+    <div class="appbar">المفضلة</div>
+    <div id="favList"></div>
+    <div class="empty" id="favEmpty" style="display:none">
+      <div class="big">🤍</div>
+      <b style="color:var(--text)">لا توجد أنشطة في المفضلة بعد</b><br>
+      اضغط على أيقونة القلب في أي بطاقة لإضافتها هنا،<br>وستبقى محفوظة على جهازك.
+    </div>
+  </section>
+
+  <!-- ===== المساعد الذكي ===== -->
+  <section class="screen" id="suggest">
+    <div class="appbar">🎲 اقترح لي نشاطًا</div>
+    <div id="wizard"></div>
+  </section>
+
+  <!-- ===== الإعدادات ===== -->
+  <section class="screen" id="settings">
+    <div class="appbar">الإعدادات</div>
+    <div class="setcard">
+      <div class="ttl">🌙 الوضع الليلي</div>
+      <div class="seg" id="themeSeg">
+        <button onclick="setTheme(0)" class="on">نظام</button>
+        <button onclick="setTheme(1)">نهاري</button>
+        <button onclick="setTheme(2)">ليلي</button>
+      </div>
+    </div>
+    <div class="setcard">
+      <div class="ttl">📝 حجم الخط <span id="fontLabel" style="color:var(--sub);font-weight:400;font-size:calc(11px * var(--fs))">متوسط حاليًا</span></div>
+      <div class="chipsrow" id="fontChips"></div>
+    </div>
+    <div class="menu">
+      <div class="mi" onclick="showSubPage('import')"><div class="miic">⬆️</div><b>استيراد المحتوى</b><small>إضافة ملفات JSON</small><span class="mic">جديد</span></div>
+      <div class="mi" onclick="showSubPage('privacy')"><div class="miic">🛡️</div><b>سياسة الخصوصية</b><span style="font-size:calc(14px * var(--fs))">‹</span></div>
+      <div class="mi" onclick="showSubPage('about')"><div class="miic">ℹ️</div><b>حول التطبيق</b><span style="font-size:calc(14px * var(--fs))">‹</span></div>
+      <div class="mi" onclick="showSubPage('contact')"><div class="miic">✉️</div><b>تواصل معنا</b><span style="font-size:calc(14px * var(--fs))">‹</span></div>
+    </div>
+    <div class="version">فسحة الحفّاظ — الإصدار 1.0.0</div>
+  </section>
+
+  <!-- ===== تفاصيل النشاط ===== -->
+  <section class="screen" id="details">
+    <div class="appbar tabs">
+      <span class="back" onclick="closeDetails()">‹ رجوع</span>
+      <span>تفاصيل النشاط</span>
+      <span></span>
+    </div>
+    <div id="detailsContent"></div>
+  </section>
+
+  <!-- ===== صفحة فرعية (من الإعدادات) ===== -->
+  <section class="screen" id="subpage">
+    <div class="appbar tabs">
+      <span class="back" onclick="closeSubPage()">‹ رجوع</span>
+      <span id="subTitle"></span>
+      <span></span>
+    </div>
+    <input type="file" id="jsonFilesInput" accept=".json,application/json" multiple style="display:none">
+    <div id="subContent"></div>
+  </section>
+
+  <!-- شريط التنقل -->
+  <nav class="nav" id="nav">
+    <button class="on" onclick="go('home')"><span class="pill2"><span class="ic">🏠</span></span>الرئيسية</button>
+    <button onclick="go('search')"><span class="pill2"><span class="ic">🔍</span></span>البحث</button>
+    <button onclick="go('favs')"><span class="pill2"><span class="ic">❤️</span></span>المفضلة</button>
+    <button onclick="go('suggest')"><span class="pill2"><span class="ic">🎲</span></span>اقترح نشاطًا</button>
+    <button onclick="go('settings')"><span class="pill2"><span class="ic">⚙️</span></span>الإعدادات</button>
+  </nav>
+
+  <!-- تنبيه منبثق صغير -->
+  <div class="hint" id="toast" style="opacity:0;transition:opacity .25s;max-width:88%;white-space:normal;text-align:center;line-height:1.6"></div>
+</div>
+
+<script>
+  const ICONS = { menu_book:'📖', mosque:'🕌', directions_run:'🏃', psychology:'🧩', groups:'👥',
+    emoji_events:'🏆', child_care:'🧒', school:'🎓', star:'⭐' };
+
+  let categories = [
+    { id:'quranic', name:'الأنشطة القرآنية', icon:'menu_book', color:'#22C55E', count:12 },
+    { id:'islamic', name:'الأنشطة الإسلامية', icon:'mosque', color:'#16A34A', count:9 },
+    { id:'kinetic', name:'الألعاب الحركية', icon:'directions_run', color:'#F97316', count:7 },
+    { id:'intelligence', name:'ألعاب الذكاء', icon:'psychology', color:'#3B82F6', count:6 },
+    { id:'group', name:'الألعاب الجماعية', icon:'groups', color:'#8B5CF6', count:8 },
+    { id:'culture', name:'المسابقات الثقافية', icon:'emoji_events', color:'#FBBF24', count:5 },
+    { id:'kids', name:'ألعاب الأطفال', icon:'child_care', color:'#EC4899', count:6 },
+    { id:'programs', name:'البرامج التربوية', icon:'school', color:'#06B6D4', count:4 },
+  ];
+
+  let activities = [
+    { id:'a1', title:'سباق التسميع', cat:'quranic', catName:'الأنشطة القرآنية', icon:'📖', color:'#22C55E',
+      desc:'يتبارى الطلاب في تسميع صفحة الحفظ الجديدة بطريقة ممتعة، مع منح النقاط لكل إتقان وتصحيح فوري.',
+      steps:['حدد مقطع التسميع من صفحة الحفظ الجديدة.','يتسابق الطلاب بالترتيب في تسميع المقطع دون النظر.','امنح نقطة لكل تسميع متقن وزد الصعوبة تدريجيًا.'],
+      chips:[{i:'🧒',t:'6 - 12 سنة',c:'#3B82F6'},{i:'👥',t:'5 - 10 مشارك',c:'#8B5CF6'},
+             {i:'⏱',t:'10 دقيقة',c:'#F97316'},{i:'🏃',t:'حركية',c:'#F97316'}],
+      video:true, fav:true },
+    { id:'a2', title:'سلة الأسئلة', cat:'culture', catName:'المسابقات الثقافية', icon:'🏆', color:'#FBBF24',
+      desc:'أسئلة ثقافية متنوعة توضع في سلة، ويختار كل فريق سؤالًا ويجيب عنه ضمن وقت محدد.',
+      steps:['جهّز بطاقات أسئلة ثقافية متنوعة وضعها في سلة.','يسحب كل فريق سؤالًا ويجيب خلال الوقت المحدد.','احسب النقاط وأعلن الفريق الفائز في النهاية.'],
+      chips:[{i:'🧒',t:'9 - 12 سنة',c:'#3B82F6'},{i:'👥',t:'10 - 20 مشارك',c:'#8B5CF6'},
+             {i:'⏱',t:'15 دقيقة',c:'#F97316'},{i:'🧘',t:'هادئة',c:'#06B6D4'}],
+      video:true, fav:false },
+    { id:'a3', title:'لعبة ذاكرة السور', cat:'intelligence', catName:'ألعاب الذكاء', icon:'🧩', color:'#3B82F6',
+      desc:'بطاقات مقلوبة لأسماء السور وترتيبها؛ يقلب الطالب بطاقتين متتاليتين للعثور على المتطابقة.',
+      steps:['وزع بطاقات أسماء السور مقلوبة على الطاولة.','يقلب الطالب بطاقتين ويكشف عن المتطابقة الصحيحة.','صاحب أكبر عدد من الأزواج الصحيحة هو الفائز.'],
+      chips:[{i:'🧒',t:'6 - 8 سنوات',c:'#3B82F6'},{i:'👥',t:'5 - 10 مشارك',c:'#8B5CF6'},
+             {i:'⏱',t:'10 دقيقة',c:'#F97316'},{i:'🧘',t:'هادئة',c:'#06B6D4'}],
+      video:false, fav:true },
+    { id:'a4', title:'سباق الكراسي الحركي', cat:'kinetic', catName:'الألعاب الحركية', icon:'🏃', color:'#F97316',
+      desc:'لعبة الكراسي بأسلوب قرآني: عند توقف الموسيقى يجلس من لم يجد كرسيًا ويجيب عن سؤال حفظ.',
+      steps:['رتب الكراسي دائريًا وقلّص عددها عن اللاعبين.','شغّل الموسيقى وأوقفها فجأة؛ من يبقى واقفًا يجيب عن سؤال حفظ.','الأصح يشارك في الحفظ واللعب حتى آخر جولة.'],
+      chips:[{i:'🧒',t:'6 - 12 سنة',c:'#3B82F6'},{i:'👥',t:'10 - 20 مشارك',c:'#8B5CF6'},
+             {i:'⏱',t:'20 دقيقة',c:'#F97316'},{i:'🏃',t:'حركية',c:'#F97316'}],
+      video:true, fav:false },
+    { id:'a5', title:'معلّق الأسئلة الجماعي', cat:'group', catName:'الألعاب الجماعية', icon:'👥', color:'#8B5CF6',
+      desc:'تتدلى أسئلة حفظ وثقافة من خيط، وكل فريق يختار سؤالًا معلقًا ويفتحه بجواب جماعي.',
+      steps:['علّق بطاقات الأسئلة على خيط مرتفع قليلًا.','يتعاون الفريق لاختيار بطاقة وفكّها.','أجب جماعيًا واحصد النقاط لصالح الفريق.'],
+      chips:[{i:'🧒',t:'9 - 12 سنة',c:'#3B82F6'},{i:'👥',t:'أكثر من 20',c:'#8B5CF6'},
+             {i:'⏱',t:'30 دقيقة',c:'#F97316'},{i:'🧘',t:'هادئة',c:'#06B6D4'}],
+      video:false, fav:false },
+  ];
+
+  function darken(hex, f){ let n=parseInt(hex.slice(1),16); let r=n>>16&255,g=n>>8&255,b=n&255;
+    r=Math.round(r*(1-f));g=Math.round(g*(1-f));b=Math.round(b*(1-f));
+    return '#'+((r<<16)|(g<<8)|b).toString(16).padStart(6,'0'); }
+
+  function cardHTML(a, showWhy){
+    const why = showWhy ? `<div class="why"><b>لماذا يناسبك؟</b><div class="tags">
+      <span class="tag">يناسب النوع المطلوب</span><span class="tag">مدة مناسبة</span><span class="tag">يتسع لعدد طلابك</span>
+    </div></div>` : '';
+    return `<div class="card" onclick="showDetails('${a.id}')">${why}
+      <div class="head" style="background:linear-gradient(135deg,${a.color},${darken(a.color,.25)})">
+        <div class="big">${a.icon}</div>
+        <div class="heart" onclick="event.stopPropagation();toggleFav('${a.id}')" id="h_${a.id}">${a.fav?'❤️':'🤍'}</div>
+      </div>
+      <div class="body">
+        <div class="title">${a.title}</div>
+        <div class="chips">${a.chips.map(c=>`<span class="chip" style="background:${c.c}18;color:${c.c}">${c.i} ${c.t}</span>`).join('')}</div>
+        <div class="foot">
+          <div class="watch ${a.video?'':'off'}" onclick="event.stopPropagation();${a.video?`showDetails('${a.id}')`:`notify('لا يوجد شرح مرئي لهذا النشاط.')`}">${a.video?'▶ مشاهدة الشرح':'⛔ بدون شرح مرئي'}</div>
+          <div class="pill" style="background:${a.color}1f;color:${a.color}">${ICONS[a.cat]||'⭐'} ${a.catName}</div>
+        </div>
+      </div>
+    </div>`;
+  }
+
+  function renderHome(){
+    document.getElementById('catGrid').innerHTML = categories.map(c=>
+      `<div class="cat" onclick="filterByCategory('${c.id}')">
+        <div class="top" style="background:linear-gradient(135deg,${c.color},${darken(c.color,.25)})">${ICONS[c.icon]||'⭐'}</div>
+        <div class="body"><b>${c.name}</b><span>${activities.filter(a=>a.cat===c.id).length} نشاط</span></div>
+      </div>`).join('');
+    document.getElementById('statAct').textContent = activities.length;
+    document.getElementById('statCat').textContent = categories.length;
+  }
+  renderHome();
+
+  function filterByCategory(id){
+    const c=categories.find(x=>x.id===id);
+    const inp=document.getElementById('searchInp');
+    inp.value=c.name;
+    doSearch(c.name);
+    go('search');
+  }
+
+  function toggleFav(id){ const a=activities.find(x=>x.id===id); a.fav=!a.fav;
+    const h=document.getElementById('h_'+id); if(h){ h.textContent=a.fav?'❤️':'🤍'; }
+    const d=document.getElementById('d_'+id); if(d){ d.textContent=a.fav?'❤️':'🤍'; }
+    document.getElementById('statFav').textContent=activities.filter(x=>x.fav).length;
+    renderFavs(); }
+
+  function renderFavs(){
+    const favs=activities.filter(a=>a.fav);
+    document.getElementById('favList').innerHTML=favs.map(a=>cardHTML(a)).join('');
+    document.getElementById('favEmpty').style.display=favs.length?'none':'block';
+  }
+  renderFavs();
+
+  function doSearch(q){
+    q=q.trim();
+    const list=document.getElementById('searchResults'), empty=document.getElementById('searchEmpty'),
+          count=document.getElementById('searchCount');
+    if(!q){ list.innerHTML=''; empty.style.display='block'; count.textContent='0 نتيجة'; return; }
+    const res=activities.filter(a=>a.title.includes(q)||a.catName.includes(q));
+    list.innerHTML=res.map(a=>cardHTML(a)).join('');
+    empty.style.display='none';
+    count.textContent=res.length+' نتيجة';
+  }
+
+  // ---- المساعد الذكي ----
+  const QUESTIONS=[
+    { q:'كم عدد الطلاب في الحلقة؟', h:'اختر أقرب نطاق لعدد طلابك', ic:'👥', opts:['أقل من 5','5 - 10','10 - 20','أكثر من 20'] },
+    { q:'ما أعمار الطلاب؟', h:'اختر الفئة العمرية المناسبة', ic:'🧒', opts:['6 - 8 سنوات','9 - 12 سنة','13 - 15 سنة','16 سنة فأكثر','أعمار متنوعة'] },
+    { q:'كم دقيقة لديك؟', h:'المدة المتاحة لتنفيذ النشاط', ic:'⏱', opts:['10 دقائق','15 دقيقة','20 دقيقة','30 دقيقة','أكثر من 30'] },
+    { q:'داخل القاعة أم خارجها؟', h:'مكان تنفيذ النشاط', ic:'📍', opts:['داخل القاعة','خارج القاعة','لا يهم'] },
+    { q:'هل تتوفر أدوات لديك؟', h:'مثل سبورة، كرات، ورق، مقص...', ic:'🛠', opts:['بدون أدوات','الأدوات متوفرة','لا يهم'] },
+    { q:'ما نوع النشاط المطلوب؟', h:'حدد طبيعة النشاط أو اختر «لا يهم»', ic:'🏆', opts:['قرآني','حركي','ثقافي','ترفيهي','جماعي','لا يهم'] },
+  ];
+  let step=0, answers={};
+
+  function renderWizard(){
+    const el=document.getElementById('wizard');
+    if(Object.keys(answers).length===QUESTIONS.length){ renderResults(); return; }
+    const q=QUESTIONS[step];
+    el.innerHTML=`
+      <div class="progress"><span>السؤال ${step+1} من ${QUESTIONS.length}</span><small>${step+1}/${QUESTIONS.length}</small></div>
+      <div class="bar"><i style="width:${((step)/QUESTIONS.length)*100}%"></i></div>
+      <div class="qcard"><div class="qic">${q.ic}</div><h3>${q.q}</h3><p>${q.h}</p></div>
+      ${q.opts.map(o=>`<div class="opt" onclick="pick('${o}')" id="opt_${o}">
+          <span class="oic">${['👥','🧒','⏱','📍','🛠','🏆'][step]}</span>
+          <span>${o}</span><span class="mark">✓</span></div>`).join('')}
+      <div class="nextrow">${step>0?'<button class="back" onclick="backStep()">السابق</button>':''}
+        <button class="next" id="nextBtn" onclick="nextStep()">${step===QUESTIONS.length-1?'اقترح النشاط':'التالي'}</button></div>`;
+    if(answers[step]!==undefined){ document.getElementById('opt_'+answers[step]).classList.add('selected');
+      document.getElementById('nextBtn').disabled=false; }
+    else document.getElementById('nextBtn').disabled=true;
+  }
+
+  function pick(o){
+    answers[step]=o;
+    document.querySelectorAll('#wizard .opt').forEach(e=>e.classList.remove('selected'));
+    document.getElementById('opt_'+o).classList.add('selected');
+    document.getElementById('nextBtn').disabled=false;
+  }
+  function backStep(){ step--; renderWizard(); }
+  function nextStep(){
+    if(answers[step]===undefined) return;
+    if(step<QUESTIONS.length-1){ step++; renderWizard(); }
+    else renderResults();
+  }
+  function renderResults(){
+    const top=rankActivities(answers).slice(0,3);
+    document.getElementById('wizard').innerHTML=`
+      <div style="font-weight:900;font-size:calc(18px * var(--fs))">النتائج المقترحة</div>
+      <div class="count" style="margin:4px 0 14px">أفضل الأنشطة المناسبة لمعطياتك من مكتبتك المحلية</div>
+      ${top.length
+        ? top.map(a=>cardHTML(a,true)).join('')
+        : `<div class="empty"><div class="big">🔎</div>
+            <b style="color:var(--text)">لا يوجد نشاط يطابق المعايير</b><br>جرّب تعديل إجاباتك.</div>`}
+      <div style="text-align:center;margin-top:6px">
+        <button class="back" style="flex:none;padding:10px 22px" onclick="resetWizard()">تعديل الإجابات</button>
+      </div>`;
+  }
+
+  /// ترتيب الأنشطة حسب مطابقتها لإجابات المساعد الذكي (من المكتبة الفعلية).
+  function rankActivities(a){
+    const type=a[5];
+    return activities.map(act=>{
+      let s=0;
+      if(type && type!=='لا يهم'){
+        const catMatch =
+          (type==='قرآني'&&act.cat==='quranic') ||
+          (type==='حركي'&&act.cat==='kinetic') ||
+          (type==='ثقافي'&&act.cat==='culture') ||
+          (type==='ترفيهي'&&(act.cat==='kids'||act.cat==='group')) ||
+          (type==='جماعي'&&(act.cat==='group'||act.cat==='programs'||act.cat==='quranic'));
+        if(catMatch) s+=3;
+      }
+      return {act,s};
+    }).sort((x,y)=>y.s-x.s);
+  }
+  function resetWizard(){ answers={}; step=0; renderWizard(); }
+  renderWizard();
+
+  // ---- الإعدادات ----
+  const fontLabels={0.9:'صغير',1.0:'متوسط',1.15:'كبير',1.3:'أكبر',1.5:'الأكبر'};
+  document.getElementById('fontChips').innerHTML=Object.entries(fontLabels).map(([k,v])=>
+    `<button data-key="${k}" class="${k==='1.0'?'on':''}" onclick="setFont(this,'${k}')">${v}</button>`).join('');
+
+  // الوضع الليلي: 0 نظام، 1 نهاري، 2 ليلي.
+  let themeMode=0;
+  const sysDark = window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)') : null;
+  function effectiveDark(){ return themeMode===2 || (themeMode===0 && !!(sysDark && sysDark.matches)); }
+  function applyTheme(){ document.getElementById('phone').classList.toggle('dark', effectiveDark()); }
+  function setTheme(i){
+    themeMode=i;
+    document.querySelectorAll('#themeSeg button').forEach((b,j)=>b.classList.toggle('on',j===i));
+    applyTheme();
+    try{ localStorage.setItem('preview_theme', String(i)); }catch(e){}
+  }
+  if(sysDark && sysDark.addEventListener) sysDark.addEventListener('change', applyTheme);
+
+  // حجم الخط: يُطبَّق فعليًا على كل نصوص المعاينة.
+  function setFont(el,k){
+    const scale=parseFloat(k);
+    document.querySelectorAll('#fontChips button').forEach(b=>b.classList.remove('on'));
+    el.classList.add('on');
+    document.getElementById('phone').dataset.fs=String(scale);
+    document.getElementById('fontLabel').textContent=fontLabels[k]+' حاليًا';
+    try{ localStorage.setItem('preview_font', k); }catch(e){}
+  }
+  function applySavedSettings(){
+    try{
+      const f=localStorage.getItem('preview_font');
+      const t=localStorage.getItem('preview_theme');
+      if(f && fontLabels[f]){
+        const btn=document.querySelector('#fontChips button[data-key="'+f+'"]') || document.getElementById('fontChips').children[1];
+        setFont(btn, f);
+      }
+      if(t) setTheme(parseInt(t,10));
+    }catch(e){}
+  }
+  applySavedSettings();
+  applyTheme();
+
+  // ---- التنقل ----
+  function goScreen(id, hideNav){
+    document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    const nav=document.getElementById('nav');
+    if(nav) nav.style.display = hideNav ? 'none' : 'flex';
+    if(!hideNav){
+      document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('on'));
+      const map={home:0,search:1,favs:2,suggest:3,settings:4};
+      if(map[id]!==undefined) document.querySelectorAll('.nav button')[map[id]].classList.add('on');
+    }
+  }
+  function go(id){ goScreen(id,false); }
+
+  // ---- تفاصيل النشاط ----
+  let lastScreen='home';
+  function activeScreen(){ const s=document.querySelector('.screen.active'); return s?s.id:'home'; }
+
+  function showDetails(id){
+    lastScreen=activeScreen();
+    const a=activities.find(x=>x.id===id);
+    document.getElementById('detailsContent').innerHTML=detailsHTML(a);
+    goScreen('details',true);
+  }
+  function closeDetails(){ goScreen(lastScreen,false); }
+
+  function detailsHTML(a){
+    return `<div class="card" style="margin-top:12px">
+      <div class="head" style="height:140px;background:linear-gradient(135deg,${a.color},${darken(a.color,.25)})">
+        <div class="big" style="font-size:calc(58px * var(--fs))">${a.icon}</div>
+        <div class="heart" onclick="toggleFav('${a.id}')" id="d_${a.id}">${a.fav?'❤️':'🤍'}</div>
+      </div>
+      <div class="body">
+        <div class="title" style="font-size:calc(18px * var(--fs))">${a.title}</div>
+        <div class="chips" style="margin:10px 0 12px">${a.chips.map(c=>`<span class="chip" style="background:${c.c}18;color:${c.c}">${c.i} ${c.t}</span>`).join('')}</div>
+        <p style="font-size:calc(13px * var(--fs));line-height:1.8;color:var(--sub);margin-bottom:4px">${a.desc}</p>
+        <div class="sect" style="margin:14px 0 10px"><div class="bar"></div><div><b>خطوات التنفيذ</b></div></div>
+        ${a.steps.map((s,i)=>`<div style="display:flex;gap:8px;margin-bottom:8px">
+          <div style="width:22px;height:22px;border-radius:50%;background:${a.color}22;color:${a.color};font-weight:800;font-size:calc(11px * var(--fs));display:flex;align-items:center;justify-content:center;flex:none">${i+1}</div>
+          <span style="font-size:calc(12.5px * var(--fs));line-height:1.7">${s}</span></div>`).join('')}
+        <div style="margin-top:16px">
+          ${a.video
+            ? `<div class="watch" onclick="notify('سيتم فتح رابط الشرح الخارجي في التطبيق الحقيقي')">▶ مشاهدة الشرح</div>`
+            : `<div class="watch off">⛔ بدون شرح مرئي</div>`}
+        </div>
+      </div>
+    </div>`;
+  }
+
+  // ---- الصفحات الفرعية (الإعدادات) ----
+  const SUB_PAGES={
+    import:{ title:'استيراد المحتوى',
+      html:`<div class="setcard"><div class="ttl">⬆️ إضافة ملفات من مكتبتك</div>
+        <p style="font-size:calc(12px * var(--fs));color:var(--sub);line-height:1.9;margin-top:8px">الأنشطة كلها تأتي من ملفات JSON تضعها أنت. اختر ملفًا (أو أكثر من مجلد الاستيراد)، وسيُمنع التكرار تلقائيًا ويُحتفظ بالنسخة الأحدث.</p>
+        <div style="display:flex;gap:8px;margin-top:14px">
+          <button class="next" onclick="pickJsonFiles(false)">📂 اختيار ملف</button>
+          <button class="next" onclick="pickJsonFiles(true)">🗂 من المجلد</button>
+        </div>
+        <div id="importMsg" style="margin-top:12px;font-size:calc(12px * var(--fs));color:var(--sub);line-height:1.8"></div></div>` },
+    privacy:{ title:'سياسة الخصوصية',
+      html:`<div class="setcard"><div class="ttl">🛡️ خصوصيتك أولًا</div>
+        <p style="font-size:calc(12px * var(--fs));color:var(--sub);line-height:1.9;margin-top:8px">• يعمل التطبيق دون إنترنت، وتُحفظ مفضلتك وإعداداتك على جهازك فقط.<br>• لا يجمع التطبيق أي بيانات شخصية.<br>• لا يُستخدم الإنترنت إلا لفتح روابط الشرح التي تضيفها أنت.</p></div>` },
+    about:{ title:'حول التطبيق',
+      html:`<div class="setcard"><div class="ttl">ℹ️ فسحة الحفّاظ</div>
+        <p style="font-size:calc(12px * var(--fs));color:var(--sub);line-height:1.9;margin-top:8px">تطبيق تربوي وترفيهي لمعلمي حلقات تحفيظ القرآن الكريم: مكتبة منظمة من الألعاب والأنشطة والمسابقات والبرامج التربوية تنشّط الحلقة وتدخل المتعة على الطلاب مع المحافظة على الطابع الإسلامي.</p>
+        <div class="version" style="margin-top:12px">الإصدار 1.0.0</div></div>` },
+    contact:{ title:'تواصل معنا',
+      html:`<div class="setcard"><div class="ttl">✉️ يسعدنا سماعك</div>
+        <p style="font-size:calc(12px * var(--fs));color:var(--sub);line-height:1.9;margin-top:8px">لأي اقتراح أو ملاحظة يمكنك التواصل عبر البريد أو واتساب.</p>
+        <div style="display:flex;gap:8px;margin-top:14px">
+          <button class="next" onclick="notify('فتح البريد (معاينة)')">📧 البريد</button>
+          <button class="next" onclick="notify('فتح واتساب (معاينة)')">💬 واتساب</button>
+        </div></div>` },
+  };
+  function showSubPage(key){
+    lastScreen=activeScreen();
+    const p=SUB_PAGES[key];
+    document.getElementById('subTitle').textContent=p.title;
+    document.getElementById('subContent').innerHTML=p.html;
+    if(key==='import'){
+      const el=document.getElementById('importMsg');
+      el.textContent = 'مكتبتك الآن تحتوي '+activities.length+' نشاطًا — أضف ملف JSON ليزداد العدد.';
+    }
+    goScreen('subpage',true);
+  }
+  function closeSubPage(){ goScreen(lastScreen,false); }
+
+  // ---- استيراد المحتوى (حقيقي: قراءة ملف JSON وإضافته للمكتبة) ----
+  function pickJsonFiles(multiple){
+    const inp=document.getElementById('jsonFilesInput');
+    inp.multiple = multiple;
+    inp.onchange = ()=>importFromInput(inp);
+    inp.click();
+  }
+
+  function importFromInput(inp){
+    const files=[...inp.files];
+    inp.value='';
+    if(!files.length) return;
+    let done=0, added=0;
+    for(const f of files){
+      const reader=new FileReader();
+      reader.onload=()=>{
+        try{
+          added += importJsonContent(JSON.parse(reader.result), f.name);
+        }catch(e){
+          notify('تعذّر قراءة الملف: '+f.name);
+        }
+        done++;
+        if(done===files.length) afterImport(added);
+      };
+      reader.readAsText(f);
+    }
+  }
+
+  /// يعيد عدد الأنشطة الجديدة المستوردة من محتوى JSON (يتجاهل المكرر).
+  function importJsonContent(parsed, fileName){
+    let rawList=[];
+    if(Array.isArray(parsed)) rawList=parsed;
+    else if(parsed && Array.isArray(parsed.activities)) rawList=parsed.activities;
+    else if(parsed && parsed.activity) rawList=[parsed.activity];
+    if(!rawList.length){
+      notify('الملف '+fileName+' لا يحتوي أنشطة بصيغة معروفة');
+      return 0;
+    }
+    let count=0;
+    for(const r of rawList){
+      if(!r || !r.title) continue;
+      const dup=activities.find(a=>a.id===r.id || a.title===r.title);
+      if(dup) continue;
+      activities.push(toCard(r));
+      count++;
+    }
+    return count;
+  }
+
+  /// تحويل نشاط من بنية ملف JSON المعتمدة إلى بطاقة المعاينة.
+  function toCard(r){
+    const catId=resolveCatId(r.category);
+    let cat=categories.find(c=>c.id===catId);
+    if(!cat){
+      const palette=['#22C55E','#3B82F6','#8B5CF6','#EC4899','#F97316','#06B6D4','#FBBF24','#EF4444'];
+      cat={ id:catId, name:catId, icon:'star', color:palette[categories.length%palette.length] };
+      categories.push(cat);
+    }
+    const mv = r.movement && String(r.movement).indexOf('حرك')>=0
+      ? {i:'🏃',t:'حركية',c:'#F97316'} : {i:'🧘',t:'هادئة',c:'#06B6D4'};
+    const chips=[];
+    if(r.age && r.age.min!=null) chips.push({i:'🧒',t:ageLabel(r.age),c:'#3B82F6'});
+    if(r.participants && r.participants.min!=null) chips.push({i:'👥',t:partLabel(r.participants),c:'#8B5CF6'});
+    if(r.duration && r.duration.min!=null) chips.push({i:'⏱',t:r.duration.min+' دقيقة',c:'#F97316'});
+    chips.push(mv);
+    return {
+      id: r.id || ('imp_'+Math.random().toString(36).slice(2,8)),
+      title: r.title,
+      cat: catId,
+      catName: cat.name,
+      icon: ICONS[cat.icon] || '⭐',
+      color: cat.color,
+      desc: r.description || 'نشاط مستورد من مكتبتك.',
+      steps: (Array.isArray(r.steps)&&r.steps.length)
+        ? r.steps
+        : ['اقرأ التعليمات وجهّز الأدوات.','نفّذ النشاط مع الطلاب.','راجع النتائج وكافئ المتميزين.'],
+      chips,
+      video: !!(r.videoUrl || r.video),
+      fav: !!(r.favorite || r.fav),
+    };
+  }
+
+  function resolveCatId(raw){
+    const s=String(raw||'').trim();
+    for(const c of categories){ if(c.id===s) return c.id; }
+    const names={قرآن:'quranic',إسلام:'islamic',حرك:'kinetic',ذكاء:'intelligence',جماع:'group',ثقاف:'culture',طفل:'kids',برنامج:'programs'};
+    for(const k in names){ if(s.indexOf(k)>=0) return names[k]; }
+    return 'other';
+  }
+  function ageLabel(r){ if(r.min!=null&&r.max!=null) return r.min+' - '+r.max+' سنة'; if(r.min!=null) return r.min+' سنة فأكثر'; return 'كل الأعمار'; }
+  function partLabel(r){ if(r.min!=null&&r.max!=null) return r.min+' - '+r.max+' مشارك'; return 'مشاركون'; }
+
+  function afterImport(added){
+    renderHome();
+    renderFavs();
+    const el=document.getElementById('importMsg');
+    if(added>0){
+      el.textContent = 'تم إضافة '+added+' نشاط جديد بنجاح — مكتبتك الآن تحتوي '+activities.length+' نشاطًا.';
+      notify('تم استيراد '+added+' نشاط جديد ✓');
+    }else{
+      el.textContent = 'لم تُضف أنشطة جديدة: الملف فارغ أو الأنشطة مكررة (نفس id أو العنوان).';
+      notify('لم تُضف أنشطة جديدة (فارغ أو مكرر)');
+    }
+  }
+
+  // ---- تنبيه منبثق صغير ----
+  let toastTimer;
+  function notify(msg){
+    const el=document.getElementById('toast');
+    el.textContent=msg; el.style.opacity=1;
+    clearTimeout(toastTimer);
+    toastTimer=setTimeout(()=>{ el.style.opacity=0; },1800);
+  }
+</script>
+</body>
+</html>
