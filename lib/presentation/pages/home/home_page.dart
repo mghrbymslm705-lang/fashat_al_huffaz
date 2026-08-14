@@ -477,7 +477,7 @@ class _LoadStatus extends StatelessWidget {
     return Column(
       children: [
         if (isLoading) const LinearProgressIndicator(),
-        if (error != null) _ErrorCard(message: error!),
+        if (error != null) _ErrorCard(message: error),
       ],
     );
   }
