@@ -43,13 +43,21 @@
   -->
   <script src="flutter_bootstrap.js" async></script>
   <script>
-    // ل Hooks: تثبيت PWA
+    // PWA Install
     let deferredPrompt;
     window.addEventListener('beforeinstallprompt', (e) => {
       e.preventDefault();
       deferredPrompt = e;
-      window.deferredPrompt = e;
     });
+
+    // Flutter ينادي هذه الدالة لبدء التثبيت
+    function promptInstall() {
+      if (deferredPrompt) {
+        deferredPrompt.prompt();
+        return 'available';
+      }
+      return 'unavailable';
+    }
   </script>
 </body>
 </html>
