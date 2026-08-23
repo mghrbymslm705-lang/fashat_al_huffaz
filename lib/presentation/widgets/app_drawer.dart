@@ -1,3 +1,6 @@
+import 'dart:js' as js;
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart' as url_launcher;
@@ -166,13 +169,27 @@ class AppDrawer extends StatelessWidget {
     }
   }
 
-  void _installApp(BuildContext context) {
+  Future<void> _installApp(BuildContext context) async {
+    if (kIsWeb) {
+      try {
+        final result = js.context.callMethod('promptInstall');
+        if (result == 'unavailable') {
+          _showInstallGuide(context);
+        }
+      } catch (_) {
+        _showInstallGuide(context);
+      }
+    } else {
+      _showInstallGuide(context);
+    }
+  }
+
+  void _showInstallGuide(BuildContext context) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: const Text(
           'لتثبيت التطبيق على هاتفك:\n'
-          'Android: اضغط زر المشاركة ← "إضافة إلى الشاشة الرئيسية"\n'
-          'iPhone: اضغط زر المشاركة ← "إضافة إلى الشاشة الرئيسية"',
+          'اضغط زر المشاركة ← "إضافة إلى الشاشة الرئيسية"',
           textDirection: TextDirection.rtl,
         ),
         duration: const Duration(seconds: 5),
