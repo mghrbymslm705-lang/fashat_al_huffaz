@@ -573,7 +573,7 @@ class _AudioToggle extends StatelessWidget {
                         audio.isPlaying
                             ? 'الصوت يعمل الآن'
                             : 'اضغط لتشغيل الصوت',
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontSize: 12,
                           color: AppColors.textSecondary,
                         ),
