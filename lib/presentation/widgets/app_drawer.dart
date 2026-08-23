@@ -1,3 +1,5 @@
+import 'dart:js_interop';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -6,6 +8,10 @@ import 'package:url_launcher/url_launcher.dart' as url_launcher;
 
 import '../../core/theme/app_colors.dart';
 import '../providers/audio_provider.dart';
+
+/// ربط مع دالة JavaScript في المتصفح
+@JS('promptInstall')
+external String _promptInstallJS();
 
 const _whatsappNumber = '212605706006';
 const _appUrl =
@@ -173,9 +179,11 @@ class AppDrawer extends StatelessWidget {
   Future<void> _installApp(BuildContext context) async {
     if (kIsWeb) {
       try {
-        // استخدام JavaScript callMethod عبر web package
-        // Если не получится - показываем инструкцию
-        _showInstallGuide(context);
+        // استدعاء دالة JavaScript لبدء التثبيت
+        final result = _promptInstallJS();
+        if (result == 'unavailable') {
+          _showInstallGuide(context);
+        }
       } catch (_) {
         _showInstallGuide(context);
       }
