@@ -575,7 +575,7 @@ class _StatsCard extends StatelessWidget {
                     '${stats[i].value}',
                     style: const TextStyle(
                       color: Colors.white,
-                      fontWeight: FontWeight.w900,
+                      fontWeight: FontWeight.w800,
                       fontSize: 18,
                     ),
                   ),

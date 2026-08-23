@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../../core/theme/app_colors.dart';
 import '../../../domain/entities/activity.dart';
 import '../../../domain/entities/category.dart';
 import '../../providers/activity_provider.dart';
@@ -80,7 +81,7 @@ class _SearchPageState extends State<SearchPage> {
                   '${results.length} نتيجة',
                   style: const TextStyle(
                     fontSize: 12,
-                    color: Color(0xFF6B7280),
+                    color: AppColors.textSecondary,
                   ),
                 ),
               ),

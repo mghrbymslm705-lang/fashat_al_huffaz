@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../core/theme/app_colors.dart';
+import '../../../core/theme/app_theme.dart';
 import '../../../core/utils/icon_resolver.dart';
 import '../../../domain/entities/activity.dart';
 import '../../../domain/entities/category.dart';
@@ -35,40 +36,43 @@ class HomePage extends StatelessWidget {
         child: ConstrainedBox(
           constraints: const BoxConstraints(maxWidth: 1200),
           child: ListView(
-            padding: const EdgeInsets.fromLTRB(16, 10, 16, 24),
+            padding: const EdgeInsets.fromLTRB(16, 8, 16, 24),
             children: [
               const _HomeHeader(),
-              const SizedBox(height: 14),
+              const SizedBox(height: 12),
               _HeroSuggestBanner(onTap: onOpenSuggest),
               if (lastUsed != null) ...[
-                const SizedBox(height: 14),
+                const SizedBox(height: 12),
                 _ContinueCard(activity: lastUsed, lastUsedAt: lastUsedAt),
               ],
-              const SizedBox(height: 14),
+              const SizedBox(height: 12),
               const _StatsBar(),
-              const SizedBox(height: 14),
+              const SizedBox(height: 12),
               const _LoadStatus(),
               const SizedBox(height: 8),
               const SectionHeader(
-                title: '📚 استكشف الأنشطة',
-                subtitle: 'اختر قسمًا لاستعراض أنشطته',
+                title: 'استكشف الأنشطة',
+                subtitle: 'اختر قسمًا وابدأ رحلة ممتعة!',
+                color: AppColors.teal,
               ),
               const SizedBox(height: 8),
               const _CategoriesGrid(),
               if (dailyPick != null) ...[
-                const SizedBox(height: 18),
+                const SizedBox(height: 16),
                 const SectionHeader(
-                  title: '🌟 اختيار اليوم',
-                  subtitle: 'نشاط مختار خصيصًا لليوم',
+                  title: 'اختيار اليوم',
+                  subtitle: 'نشاط مختار خصيصًا لك',
+                  color: AppColors.gold,
                 ),
                 const SizedBox(height: 8),
                 _ChoiceOfDayCard(activity: dailyPick),
               ],
               if (suggested.isNotEmpty) ...[
-                const SizedBox(height: 18),
+                const SizedBox(height: 16),
                 const SectionHeader(
-                  title: '⭐ أنشطة مقترحة لك',
+                  title: 'أنشطة مقترحة لك',
                   subtitle: 'اخترناها من مكتبتك لتناسبك',
+                  color: AppColors.purple,
                 ),
                 const SizedBox(height: 8),
                 _SuggestedRow(activities: suggested),
@@ -81,46 +85,64 @@ class HomePage extends StatelessWidget {
   }
 }
 
-/// ترويسة الترحيب مع شعار التطبيق.
+// ══════════════════════════════════════════════════════════════
+//  ترويسة الترحيب
+// ══════════════════════════════════════════════════════════════
+
 class _HomeHeader extends StatelessWidget {
   const _HomeHeader();
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Row(
       children: [
+        // الشعار
         Container(
-          width: 52,
-          height: 52,
+          width: 48,
+          height: 48,
           decoration: BoxDecoration(
             gradient: const LinearGradient(
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
               colors: [AppColors.primary, AppColors.primaryDark],
             ),
-            borderRadius: BorderRadius.circular(16),
+            borderRadius: BorderRadius.circular(14),
+            boxShadow: [
+              BoxShadow(
+                color: AppColors.primary.withValues(alpha: 0.25),
+                blurRadius: 8,
+                offset: const Offset(0, 3),
+              ),
+            ],
           ),
           child: const Icon(
             Icons.menu_book_rounded,
             color: Colors.white,
-            size: 28,
+            size: 26,
           ),
         ),
         const SizedBox(width: 12),
-        const Expanded(
+        Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'فسحة الحفاظ 🌿',
-                style: TextStyle(fontWeight: FontWeight.w900, fontSize: 21),
+                'فسحة الحفّاظ',
+                style: TextStyle(
+                  fontWeight: FontWeight.w800,
+                  fontSize: 20,
+                  letterSpacing: -0.3,
+                  color: isDark ? Colors.white : AppColors.textPrimary,
+                ),
               ),
-              SizedBox(height: 2),
+              const SizedBox(height: 2),
               Text(
                 'نتعلم، نحفظ، ونستمتع بالطريق.',
                 style: TextStyle(
-                  color: AppColors.textSecondary,
+                  color: AppColors.textSecondary.withValues(alpha: 0.8),
                   fontSize: 11.5,
+                  fontWeight: FontWeight.w500,
                 ),
               ),
             ],
@@ -131,7 +153,10 @@ class _HomeHeader extends StatelessWidget {
   }
 }
 
-/// بطاقة Hero للاقتراح: التدرج الأخضر/البرتقالي + خيارات سريعة.
+// ══════════════════════════════════════════════════════════════
+//  بطاقة Hero للاقتراح — مع زخارف نباتية بسيطة
+// ══════════════════════════════════════════════════════════════
+
 class _HeroSuggestBanner extends StatelessWidget {
   const _HeroSuggestBanner({this.onTap});
 
@@ -150,28 +175,51 @@ class _HeroSuggestBanner extends StatelessWidget {
               gradient: const LinearGradient(
                 begin: Alignment.topRight,
                 end: Alignment.bottomLeft,
-                colors: [AppColors.primary, AppColors.orange],
+                colors: [AppColors.primary, Color(0xFF3AAFA9)],
               ),
-              borderRadius: BorderRadius.circular(22),
+              borderRadius: BorderRadius.circular(AppTheme.cardRadius),
+              boxShadow: [
+                BoxShadow(
+                  color: AppColors.primary.withValues(alpha: 0.3),
+                  blurRadius: 16,
+                  offset: const Offset(0, 6),
+                ),
+              ],
             ),
-            padding: const EdgeInsets.fromLTRB(16, 14, 16, 14),
+            padding: const EdgeInsets.fromLTRB(16, 16, 16, 14),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Row(
                   children: [
-                    Container(
-                      width: 48,
-                      height: 48,
-                      decoration: BoxDecoration(
-                        color: Colors.white.withValues(alpha: 0.22),
-                        shape: BoxShape.circle,
-                      ),
-                      child: const Icon(
-                        Icons.casino_rounded,
-                        color: Colors.white,
-                        size: 26,
-                      ),
+                    // دائرة الأيقونة مع زخرفة
+                    Stack(
+                      clipBehavior: Clip.none,
+                      children: [
+                        Container(
+                          width: 48,
+                          height: 48,
+                          decoration: BoxDecoration(
+                            color: Colors.white.withValues(alpha: 0.2),
+                            shape: BoxShape.circle,
+                          ),
+                          child: const Icon(
+                            Icons.casino_rounded,
+                            color: Colors.white,
+                            size: 24,
+                          ),
+                        ),
+                        // نجمة صغيرة زخرفية
+                        Positioned(
+                          top: -4,
+                          left: -4,
+                          child: Icon(
+                            Icons.auto_awesome,
+                            size: 12,
+                            color: Colors.white.withValues(alpha: 0.6),
+                          ),
+                        ),
+                      ],
                     ),
                     const SizedBox(width: 12),
                     const Expanded(
@@ -179,11 +227,11 @@ class _HeroSuggestBanner extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            '🎲 ماذا تريد أن تفعل اليوم؟',
+                            'ماذا تريد أن تفعل اليوم؟',
                             style: TextStyle(
                               color: Colors.white,
-                              fontWeight: FontWeight.w900,
-                              fontSize: 15.5,
+                              fontWeight: FontWeight.w700,
+                              fontSize: 15,
                               height: 1.3,
                             ),
                           ),
@@ -194,6 +242,7 @@ class _HeroSuggestBanner extends StatelessWidget {
                               color: Colors.white,
                               fontSize: 11.5,
                               height: 1.4,
+                              fontWeight: FontWeight.w500,
                             ),
                           ),
                         ],
@@ -208,24 +257,24 @@ class _HeroSuggestBanner extends StatelessWidget {
                   runSpacing: 8,
                   crossAxisAlignment: WrapCrossAlignment.center,
                   children: [
-                    const _QuickChip(label: '📖 حفظ'),
-                    const _QuickChip(label: '🔄 مراجعة'),
-                    const _QuickChip(label: '🏆 تحدٍّ'),
-                    const _QuickChip(label: '🏃 حركي'),
+                    const _QuickChip(label: 'حفظ', icon: Icons.book_rounded),
+                    const _QuickChip(label: 'مراجعة', icon: Icons.autorenew_rounded),
+                    const _QuickChip(label: 'تحدي', icon: Icons.emoji_events_rounded),
+                    const _QuickChip(label: 'حركي', icon: Icons.directions_run_rounded),
                     FilledButton.icon(
                       onPressed: onTap,
-                      icon: const Icon(Icons.auto_awesome_rounded, size: 16),
-                      label: const Text('✨ اختر لي'),
+                      icon: const Icon(Icons.auto_awesome_rounded, size: 15),
+                      label: const Text('اختر لي'),
                       style: FilledButton.styleFrom(
                         backgroundColor: Colors.white,
-                        foregroundColor: const Color(0xFFB45309),
+                        foregroundColor: AppColors.primaryDark,
                         padding: const EdgeInsets.symmetric(
-                          horizontal: 16,
-                          vertical: 9,
+                          horizontal: 14,
+                          vertical: 8,
                         ),
                         textStyle: const TextStyle(
-                          fontSize: 13,
-                          fontWeight: FontWeight.w800,
+                          fontSize: 12.5,
+                          fontWeight: FontWeight.w700,
                         ),
                       ),
                     ),
@@ -242,31 +291,44 @@ class _HeroSuggestBanner extends StatelessWidget {
 
 /// شارة اختيار سريع داخل بطاقة الاقتراح.
 class _QuickChip extends StatelessWidget {
-  const _QuickChip({required this.label});
+  const _QuickChip({required this.label, this.icon});
 
   final String label;
+  final IconData? icon;
 
   @override
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 4),
       decoration: BoxDecoration(
-        color: Colors.white.withValues(alpha: 0.2),
-        borderRadius: BorderRadius.circular(9),
+        color: Colors.white.withValues(alpha: 0.16),
+        borderRadius: BorderRadius.circular(AppTheme.chipRadius),
       ),
-      child: Text(
-        label,
-        style: const TextStyle(
-          color: Colors.white,
-          fontSize: 11,
-          fontWeight: FontWeight.w700,
-        ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          if (icon != null) ...[
+            Icon(icon, size: 12, color: Colors.white),
+            const SizedBox(width: 4),
+          ],
+          Text(
+            label,
+            style: const TextStyle(
+              color: Colors.white,
+              fontSize: 11,
+              fontWeight: FontWeight.w700,
+            ),
+          ),
+        ],
       ),
     );
   }
 }
 
-/// بطاقة "تابع من حيث توقفت": آخر نشاط فتحه المستخدم.
+// ══════════════════════════════════════════════════════════════
+//  بطاقة "تابع من حيث توقفت"
+// ══════════════════════════════════════════════════════════════
+
 class _ContinueCard extends StatelessWidget {
   const _ContinueCard({required this.activity, this.lastUsedAt});
 
@@ -291,19 +353,18 @@ class _ContinueCard extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
           color: Theme.of(context).colorScheme.surface,
-          borderRadius: BorderRadius.circular(18),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withValues(alpha: 0.05),
-              blurRadius: 10,
-              offset: const Offset(0, 4),
-            ),
-          ],
+          borderRadius: BorderRadius.circular(AppTheme.cardRadius),
+          border: Border.all(
+            color: Theme.of(context).brightness == Brightness.dark
+                ? Colors.white.withValues(alpha: 0.06)
+                : accent.withValues(alpha: 0.15),
+            width: 1,
+          ),
         ),
         child: Material(
           color: Colors.transparent,
           child: InkWell(
-            borderRadius: BorderRadius.circular(18),
+            borderRadius: BorderRadius.circular(AppTheme.cardRadius),
             onTap: openDetails,
             child: Padding(
               padding: const EdgeInsets.all(14),
@@ -316,7 +377,12 @@ class _ContinueCard extends StatelessWidget {
                         width: 40,
                         height: 40,
                         decoration: BoxDecoration(
-                          color: accent.withValues(alpha: 0.12),
+                          gradient: LinearGradient(
+                            colors: [
+                              accent.withValues(alpha: 0.15),
+                              accent.withValues(alpha: 0.08),
+                            ],
+                          ),
                           borderRadius: BorderRadius.circular(12),
                         ),
                         child: Icon(
@@ -326,13 +392,13 @@ class _ContinueCard extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(width: 10),
-                      const Expanded(
+                      Expanded(
                         child: Text(
-                          '📌 تابع من حيث توقفت',
+                          'تابع من حيث توقفت',
                           style: TextStyle(
-                            fontWeight: FontWeight.w800,
+                            fontWeight: FontWeight.w700,
                             fontSize: 12,
-                            color: AppColors.primaryDark,
+                            color: accent,
                           ),
                         ),
                       ),
@@ -344,7 +410,7 @@ class _ContinueCard extends StatelessWidget {
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: const TextStyle(
-                      fontWeight: FontWeight.w900,
+                      fontWeight: FontWeight.w700,
                       fontSize: 15,
                     ),
                   ),
@@ -352,8 +418,9 @@ class _ContinueCard extends StatelessWidget {
                     const SizedBox(height: 3),
                     Text(
                       'آخر استخدام · ${_timeAgo(lastUsedAt!)}',
-                      style: const TextStyle(
-                        color: AppColors.textSecondary,
+                      style: TextStyle(
+                        color:
+                            AppColors.textSecondary.withValues(alpha: 0.8),
                         fontSize: 11.5,
                       ),
                     ),
@@ -412,7 +479,10 @@ String _timeAgo(DateTime at) {
   return 'منذ $d يوم';
 }
 
-/// شريط الإحصاءات المختصر: معلومات ثانوية لا تُزاحم الأنشطة.
+// ══════════════════════════════════════════════════════════════
+//  شريط الإحصاءات — ودي ومرح
+// ══════════════════════════════════════════════════════════════
+
 class _StatsBar extends StatelessWidget {
   const _StatsBar();
 
@@ -425,20 +495,37 @@ class _StatsBar extends StatelessWidget {
         context.select<ActivityProvider, int>((p) => p.favoriteCount);
 
     final stats = [
-      (icon: IconResolver.resolve('menu_book'), label: 'نشاطًا', value: total),
-      (icon: IconResolver.resolve('folder'), label: 'قسم', value: sectionCount),
       (
-        icon: IconResolver.resolve('favorite'),
+        emoji: '📚',
+        label: 'نشاطًا',
+        value: total,
+        color: AppColors.primary,
+      ),
+      (
+        emoji: '🗂️',
+        label: 'قسم',
+        value: sectionCount,
+        color: AppColors.blue,
+      ),
+      (
+        emoji: '❤️',
         label: 'مفضل',
         value: favoriteCount,
+        color: AppColors.pink,
       ),
     ];
 
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 6),
+      padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 6),
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.surface,
-        borderRadius: BorderRadius.circular(14),
+        borderRadius: BorderRadius.circular(AppTheme.cardRadius),
+        border: Border.all(
+          color: Theme.of(context).brightness == Brightness.dark
+              ? Colors.white.withValues(alpha: 0.06)
+              : AppColors.divider.withValues(alpha: 0.5),
+          width: 0.8,
+        ),
       ),
       child: Row(
         children: [
@@ -446,13 +533,23 @@ class _StatsBar extends StatelessWidget {
             Expanded(
               child: Column(
                 children: [
-                  Icon(s.icon, size: 13, color: AppColors.textSecondary),
-                  const SizedBox(height: 3),
+                  Text(s.emoji, style: const TextStyle(fontSize: 20)),
+                  const SizedBox(height: 4),
                   Text(
-                    '${s.value} ${s.label}',
+                    '${s.value}',
+                    style: TextStyle(
+                      fontWeight: FontWeight.w800,
+                      fontSize: 16,
+                      color: s.color,
+                    ),
+                  ),
+                  const SizedBox(height: 2),
+                  Text(
+                    s.label,
                     style: const TextStyle(
-                      fontWeight: FontWeight.w700,
-                      fontSize: 12.5,
+                      fontWeight: FontWeight.w500,
+                      fontSize: 11,
+                      color: AppColors.textSecondary,
                     ),
                   ),
                 ],
@@ -464,7 +561,10 @@ class _StatsBar extends StatelessWidget {
   }
 }
 
-/// حالة التحميل: شريط تقدم + رسالة خطأ (تُعرض عند الحاجة فقط).
+// ══════════════════════════════════════════════════════════════
+//  حالة التحميل
+// ══════════════════════════════════════════════════════════════
+
 class _LoadStatus extends StatelessWidget {
   const _LoadStatus();
 
@@ -483,7 +583,10 @@ class _LoadStatus extends StatelessWidget {
   }
 }
 
-/// شبكة بطاقات الأقسام (عمودان على الهاتف، ثلاثة على الشاشات الواسعة).
+// ══════════════════════════════════════════════════════════════
+//  شبكة بطاقات الأقسام
+// ══════════════════════════════════════════════════════════════
+
 class _CategoriesGrid extends StatelessWidget {
   const _CategoriesGrid();
 
@@ -529,7 +632,10 @@ class _CategoriesGrid extends StatelessWidget {
   }
 }
 
-/// بطاقة "اختيار اليوم": نشاط واحد يُختار يوميًا من التاريخ.
+// ══════════════════════════════════════════════════════════════
+//  بطاقة "اختيار اليوم"
+// ══════════════════════════════════════════════════════════════
+
 class _ChoiceOfDayCard extends StatelessWidget {
   const _ChoiceOfDayCard({required this.activity});
 
@@ -555,16 +661,20 @@ class _ChoiceOfDayCard extends StatelessWidget {
             begin: Alignment.topRight,
             end: Alignment.bottomLeft,
             colors: [
-              AppColors.primary.withValues(alpha: 0.10),
-              AppColors.gold.withValues(alpha: 0.10),
+              AppColors.gold.withValues(alpha: 0.12),
+              AppColors.primary.withValues(alpha: 0.08),
             ],
           ),
-          borderRadius: BorderRadius.circular(18),
+          borderRadius: BorderRadius.circular(AppTheme.cardRadius),
+          border: Border.all(
+            color: AppColors.gold.withValues(alpha: 0.2),
+            width: 1,
+          ),
         ),
         child: Material(
           color: Colors.transparent,
           child: InkWell(
-            borderRadius: BorderRadius.circular(18),
+            borderRadius: BorderRadius.circular(AppTheme.cardRadius),
             onTap: openDetails,
             child: Padding(
               padding: const EdgeInsets.all(14),
@@ -577,13 +687,18 @@ class _ChoiceOfDayCard extends StatelessWidget {
                         width: 42,
                         height: 42,
                         decoration: BoxDecoration(
-                          color: AppColors.primaryDark.withValues(alpha: 0.12),
+                          gradient: LinearGradient(
+                            colors: [
+                              AppColors.gold.withValues(alpha: 0.2),
+                              AppColors.gold.withValues(alpha: 0.1),
+                            ],
+                          ),
                           borderRadius: BorderRadius.circular(13),
                         ),
                         child: const Icon(
                           Icons.auto_awesome_rounded,
                           size: 20,
-                          color: AppColors.primaryDark,
+                          color: AppColors.gold,
                         ),
                       ),
                       const SizedBox(width: 10),
@@ -596,7 +711,7 @@ class _ChoiceOfDayCard extends StatelessWidget {
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                               style: const TextStyle(
-                                fontWeight: FontWeight.w900,
+                                fontWeight: FontWeight.w700,
                                 fontSize: 15,
                               ),
                             ),
@@ -668,7 +783,10 @@ class _ChoiceOfDayCard extends StatelessWidget {
   }
 }
 
-/// صف أفقي للأنشطة المقترحة: بطاقات صغيرة تتنقل أفقيًا.
+// ══════════════════════════════════════════════════════════════
+//  صف أفقي للأنشطة المقترحة
+// ══════════════════════════════════════════════════════════════
+
 class _SuggestedRow extends StatelessWidget {
   const _SuggestedRow({required this.activities});
 
@@ -709,13 +827,12 @@ class _SuggestedCard extends StatelessWidget {
         decoration: BoxDecoration(
           color: Theme.of(context).colorScheme.surface,
           borderRadius: BorderRadius.circular(16),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withValues(alpha: 0.05),
-              blurRadius: 10,
-              offset: const Offset(0, 4),
-            ),
-          ],
+          border: Border.all(
+            color: Theme.of(context).brightness == Brightness.dark
+                ? Colors.white.withValues(alpha: 0.06)
+                : accent.withValues(alpha: 0.15),
+            width: 1,
+          ),
         ),
         child: Material(
           color: Colors.transparent,
@@ -736,7 +853,12 @@ class _SuggestedCard extends StatelessWidget {
                     width: 42,
                     height: 42,
                     decoration: BoxDecoration(
-                      color: accent.withValues(alpha: 0.12),
+                      gradient: LinearGradient(
+                        colors: [
+                          accent.withValues(alpha: 0.15),
+                          accent.withValues(alpha: 0.08),
+                        ],
+                      ),
                       borderRadius: BorderRadius.circular(13),
                     ),
                     child: Icon(icon, size: 22, color: accent),
@@ -773,10 +895,10 @@ class _SuggestedCard extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(width: 6),
-                  const Icon(
+                  Icon(
                     Icons.arrow_back_rounded,
                     size: 16,
-                    color: AppColors.primaryDark,
+                    color: accent,
                   ),
                 ],
               ),
@@ -788,9 +910,10 @@ class _SuggestedCard extends StatelessWidget {
   }
 }
 
-/// غلاف تفاعل خفيف: ضغط بسيط + hover ناعم على سطح المكتب.
-///
-/// لا يمسّ نقر [InkWell] الداخلي ولا حركته؛ يضيف إحساسًا لمسيًا فقط.
+// ══════════════════════════════════════════════════════════════
+//  غلاف تفاعل: ضغط + hover
+// ══════════════════════════════════════════════════════════════
+
 class _TapScale extends StatefulWidget {
   const _TapScale({required this.child});
 
@@ -806,14 +929,14 @@ class _TapScaleState extends State<_TapScale> {
 
   @override
   Widget build(BuildContext context) {
-    final scale = _pressed ? 0.975 : (_hovered ? 1.015 : 1.0);
+    final scale = _pressed ? 0.975 : (_hovered ? 1.01 : 1.0);
 
     return MouseRegion(
       onEnter: (_) => setState(() => _hovered = true),
       onExit: (_) => setState(() {
-            _hovered = false;
-            _pressed = false;
-          }),
+        _hovered = false;
+        _pressed = false;
+      }),
       cursor: SystemMouseCursors.click,
       child: Listener(
         onPointerDown: (_) => setState(() => _pressed = true),
@@ -830,7 +953,10 @@ class _TapScaleState extends State<_TapScale> {
   }
 }
 
-/// بطاقة خطأ التحميل.
+// ══════════════════════════════════════════════════════════════
+//  بطاقة خطأ
+// ══════════════════════════════════════════════════════════════
+
 class _ErrorCard extends StatelessWidget {
   const _ErrorCard({required this.message});
 
@@ -842,17 +968,22 @@ class _ErrorCard extends StatelessWidget {
       margin: const EdgeInsets.only(top: 8),
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: const Color(0xFFFEF2F2),
-        borderRadius: BorderRadius.circular(14),
+        color: AppColors.error.withValues(alpha: 0.08),
+        borderRadius: BorderRadius.circular(AppTheme.cardRadius),
+        border: Border.all(
+          color: AppColors.error.withValues(alpha: 0.2),
+        ),
       ),
       child: Row(
         children: [
-          const Icon(Icons.error_outline_rounded, color: Colors.redAccent),
+          const Icon(Icons.error_outline_rounded,
+              color: AppColors.error, size: 18),
           const SizedBox(width: 8),
           Expanded(
             child: Text(
               message,
-              style: const TextStyle(color: Colors.redAccent, fontSize: 12),
+              style: const TextStyle(
+                  color: AppColors.error, fontSize: 12),
             ),
           ),
         ],

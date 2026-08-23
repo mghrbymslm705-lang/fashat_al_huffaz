@@ -38,6 +38,9 @@ dependencies:
 
   cupertino_icons: ^1.0.8
 
+  # مشاركة التطبيق
+  share_plus: ^10.0.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

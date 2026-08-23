@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../../../core/enums/location_type.dart';
 import '../../../core/enums/movement_level.dart';
+import '../../../core/theme/app_colors.dart';
 import '../../../domain/entities/activity_filter.dart';
 import '../../../domain/entities/range_value.dart';
 import '../../providers/activity_provider.dart';
@@ -286,7 +287,7 @@ class _RangeSliderTile extends StatelessWidget {
               Text(
                 '${values.start.round()} - ${values.end.round()}',
                 style: const TextStyle(
-                  color: Color(0xFF3B82F6),
+                  color: AppColors.blue,
                   fontWeight: FontWeight.w700,
                   fontSize: 13,
                 ),

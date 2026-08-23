@@ -116,13 +116,13 @@ class _ActiveFilterBar extends StatelessWidget {
       child: Row(
         children: [
           const Icon(Icons.filter_alt_rounded,
-              color: Color(0xFFB45309), size: 18),
+              color: AppColors.gold, size: 18),
           const SizedBox(width: 8),
           Expanded(
             child: Text(
               'الفلاتر مفعلة ($count شرط)',
               style: const TextStyle(
-                color: Color(0xFFB45309),
+                color: AppColors.gold,
                 fontWeight: FontWeight.w700,
                 fontSize: 12,
               ),

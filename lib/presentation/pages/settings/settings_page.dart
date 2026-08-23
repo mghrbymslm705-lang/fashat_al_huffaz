@@ -172,7 +172,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   child: Text(
                     '${AppConstants.appName} — الإصدار ${AppConstants.appVersion}',
                     style: TextStyle(
-                      color: Color(0xFF9CA3AF),
+                      color: AppColors.textSecondary,
                       fontSize: 12,
                     ),
                   ),
@@ -504,7 +504,7 @@ class _Segmented<T> extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(3),
       decoration: BoxDecoration(
-        color: isDark ? const Color(0xFF2A3340) : const Color(0xFFF1F5F9),
+        color: isDark ? const Color(0xFF2A3340) : AppColors.divider.withValues(alpha: 0.4),
         borderRadius: BorderRadius.circular(12),
       ),
       child: Row(

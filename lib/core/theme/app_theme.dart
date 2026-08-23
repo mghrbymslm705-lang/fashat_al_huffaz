@@ -1,135 +1,245 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'app_colors.dart';
 
-/// إعدادات التصميم العامة (Material 3 + خط Tajawal).
+/// إعدادات التصميم العام: Material 3 + خط Tajawal + RTL.
 ///
-/// الوضع الليلي/النهاري كلاهما مبني على نفس لوحة الألوان
-/// مع ضبط تلقائي للخلفيات والأسطح.
+/// ثيم حيوي أنيق يجمع بين المرح والتربية والهوية القرآنية.
 class AppTheme {
   AppTheme._();
 
-  /// اسم خط التطبيق (مُضمّن داخل الملف، يعمل دون إنترنت).
+  /// اسم خط التطبيق (مُضمّن، يعمل دون إنترنت).
   static const String fontFamily = 'Tajawal';
 
-  /// نصف قطر البطاقات الكبيرة (مناسبة للأطفال).
+  /// نصف قطر البطاقات الكبيرة.
   static const double cardRadius = 20;
 
-  /// الثيم النهاري.
+  /// نصف قطر البطاقات الصغيرة.
+  static const double chipRadius = 12;
+
+  /// نصف قطر الأزرار.
+  static const double buttonRadius = 14;
+
+  // ─────────── الثيم النهاري ───────────
+
   static ThemeData light() => _base(Brightness.light);
 
-  /// الثيم الليلي.
+  // ─────────── الثيم الليلي ───────────
+
   static ThemeData dark() => _base(Brightness.dark);
+
+  // ─────────── البنية الأساسية ───────────
 
   static ThemeData _base(Brightness brightness) {
     final isDark = brightness == Brightness.dark;
+
+    final seed = isDark ? const Color(0xFF6BAF92) : AppColors.primary;
+
     final scheme = ColorScheme.fromSeed(
-      seedColor: AppColors.primary,
+      seedColor: seed,
       brightness: brightness,
       primary: AppColors.primary,
+      secondary: AppColors.teal,
       surface: isDark ? AppColors.surfaceDark : AppColors.surface,
-      error: const Color(0xFFEF4444),
+      error: AppColors.error,
     );
+
+    final bg = isDark ? const Color(0xFF14171C) : AppColors.background;
 
     final base = ThemeData(
       useMaterial3: true,
       brightness: brightness,
       colorScheme: scheme,
       fontFamily: fontFamily,
-      scaffoldBackgroundColor:
-          isDark ? const Color(0xFF11161E) : AppColors.backgroundLight,
+      scaffoldBackgroundColor: bg,
     );
 
     return base.copyWith(
-      textTheme: base.textTheme.copyWith(
-        bodyMedium: const TextStyle(color: AppColors.textPrimary),
-      ),
+      // ── النصوص ──
+      textTheme: _textTheme(base, isDark),
+
+      // ── شريط العنوان ──
       appBarTheme: AppBarTheme(
         centerTitle: true,
         elevation: 0,
+        scrolledUnderElevation: 0,
         backgroundColor: Colors.transparent,
         surfaceTintColor: Colors.transparent,
+        systemOverlayStyle: isDark
+            ? SystemUiOverlayStyle.light
+            : SystemUiOverlayStyle.dark,
         titleTextStyle: TextStyle(
           fontFamily: fontFamily,
           fontWeight: FontWeight.w700,
-          fontSize: 20,
+          fontSize: 18,
+          letterSpacing: -0.2,
           color: isDark ? Colors.white : AppColors.textPrimary,
         ),
         iconTheme: IconThemeData(
-          color: isDark ? Colors.white : AppColors.textPrimary,
+          color: isDark ? Colors.white70 : AppColors.textSecondary,
+          size: 22,
         ),
       ),
+
+      // ── البطاقات ──
       cardTheme: CardThemeData(
         elevation: 0,
         color: isDark ? AppColors.surfaceDark : AppColors.surface,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(cardRadius),
+          side: BorderSide(
+            color: isDark
+                ? Colors.white.withValues(alpha: 0.06)
+                : AppColors.divider.withValues(alpha: 0.5),
+            width: 0.8,
+          ),
         ),
         margin: EdgeInsets.zero,
       ),
-      chipTheme: base.chipTheme.copyWith(
+
+      // ── الشرايح ──
+      chipTheme: ChipThemeData(
         side: BorderSide.none,
+        backgroundColor: Colors.transparent,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(chipRadius),
         ),
+        labelStyle: const TextStyle(
+          fontFamily: fontFamily,
+          fontWeight: FontWeight.w600,
+          fontSize: 12,
+        ),
+        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
       ),
+
+      // ── الأزرار المرفوعة ──
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
           backgroundColor: AppColors.primary,
-          foregroundColor: Colors.white,
+          foregroundColor: AppColors.textOnPrimary,
           elevation: 0,
+          shadowColor: AppColors.primary.withValues(alpha: 0.3),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16),
+            borderRadius: BorderRadius.circular(buttonRadius),
           ),
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
-          textStyle: const TextStyle(fontWeight: FontWeight.w700),
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 13),
+          textStyle: const TextStyle(
+            fontWeight: FontWeight.w700,
+            fontSize: 14,
+          ),
         ),
       ),
+
+      // ── الأزرار المملوءة ──
       filledButtonTheme: FilledButtonThemeData(
         style: FilledButton.styleFrom(
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16),
+            borderRadius: BorderRadius.circular(buttonRadius),
           ),
-          textStyle: const TextStyle(fontWeight: FontWeight.w700),
+          textStyle: const TextStyle(
+            fontWeight: FontWeight.w700,
+            fontSize: 14,
+          ),
         ),
       ),
+
+      // ── الأزرار المحيطية ──
       outlinedButtonTheme: OutlinedButtonThemeData(
         style: OutlinedButton.styleFrom(
-          side: const BorderSide(color: AppColors.primary),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16),
+          side: BorderSide(
+            color: isDark
+                ? AppColors.primary.withValues(alpha: 0.4)
+                : AppColors.primary.withValues(alpha: 0.5),
           ),
-          textStyle: const TextStyle(fontWeight: FontWeight.w700),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(buttonRadius),
+          ),
+          textStyle: const TextStyle(
+            fontWeight: FontWeight.w700,
+            fontSize: 14,
+          ),
         ),
       ),
+
+      // ── حقول الإدخال ──
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
-        fillColor: isDark ? AppColors.surfaceDark : Colors.white,
+        fillColor: isDark ? const Color(0xFF222730) : Colors.white,
+        contentPadding:
+            const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(16),
-          borderSide: BorderSide.none,
+          borderRadius: BorderRadius.circular(buttonRadius),
+          borderSide: BorderSide(
+            color: AppColors.divider.withValues(alpha: 0.5),
+          ),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(buttonRadius),
+          borderSide: BorderSide(
+            color: AppColors.divider.withValues(alpha: 0.5),
+          ),
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(16),
-          borderSide: const BorderSide(color: AppColors.primary, width: 2),
+          borderRadius: BorderRadius.circular(buttonRadius),
+          borderSide: const BorderSide(
+            color: AppColors.primary,
+            width: 1.5,
+          ),
         ),
-        hintStyle: const TextStyle(color: AppColors.textSecondary),
+        hintStyle: TextStyle(
+          color: AppColors.textSecondary.withValues(alpha: 0.7),
+          fontFamily: fontFamily,
+        ),
       ),
+
+      // ── شريط التنقل السفلي ──
       navigationBarTheme: NavigationBarThemeData(
-        backgroundColor: isDark ? AppColors.surfaceDark : Colors.white,
-        indicatorColor: AppColors.primary.withValues(alpha: 0.14),
-        indicatorShape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(10)),
+        backgroundColor: isDark
+            ? AppColors.surfaceDark.withValues(alpha: 0.95)
+            : AppColors.navBackground.withValues(alpha: 0.95),
+        surfaceTintColor: Colors.transparent,
+        elevation: 0,
+        indicatorColor: AppColors.primary.withValues(alpha: 0.12),
+        indicatorShape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(14),
         ),
-        height: 66,
+        height: 70,
         labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
         labelTextStyle: WidgetStateProperty.resolveWith(
-          (states) => states.contains(WidgetState.selected)
-              ? const TextStyle(fontWeight: FontWeight.w800, fontSize: 12.5)
-              : const TextStyle(fontWeight: FontWeight.w600, fontSize: 12),
+          (states) {
+            final selected = states.contains(WidgetState.selected);
+            return TextStyle(
+              fontFamily: fontFamily,
+              fontWeight: selected ? FontWeight.w700 : FontWeight.w500,
+              fontSize: selected ? 12 : 11,
+              color: selected
+                  ? AppColors.primary
+                  : AppColors.textSecondary,
+            );
+          },
+        ),
+        iconTheme: WidgetStateProperty.resolveWith(
+          (states) {
+            final selected = states.contains(WidgetState.selected);
+            return IconThemeData(
+              size: 24,
+              color: selected
+                  ? AppColors.primary
+                  : AppColors.textSecondary.withValues(alpha: 0.7),
+            );
+          },
         ),
       ),
-      dividerTheme: const DividerThemeData(thickness: 1, space: 1),
+
+      // ── الفواصل ──
+      dividerTheme: DividerThemeData(
+        thickness: 0.8,
+        space: 1,
+        color: AppColors.divider.withValues(alpha: 0.7),
+      ),
+
+      // ── المفاتيح المنزلقة ──
       switchTheme: SwitchThemeData(
         thumbColor: WidgetStateProperty.resolveWith(
           (states) => states.contains(WidgetState.selected)
@@ -137,8 +247,115 @@ class AppTheme {
               : null,
         ),
       ),
+
+      // ── مؤشرات التقدم ──
       progressIndicatorTheme: const ProgressIndicatorThemeData(
         color: AppColors.primary,
+        linearTrackColor: AppColors.divider,
+      ),
+
+      // ── التنبيهات ──
+      snackBarTheme: SnackBarThemeData(
+        behavior: SnackBarBehavior.floating,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
+        contentTextStyle: const TextStyle(
+          fontFamily: fontFamily,
+          fontWeight: FontWeight.w600,
+        ),
+      ),
+    );
+  }
+
+  // ─────────── النصوص المُحسّنة ───────────
+
+  static TextTheme _textTheme(ThemeData base, bool isDark) {
+    final onBg = isDark ? Colors.white : AppColors.textPrimary;
+    final onBgSec = isDark ? Colors.white60 : AppColors.textSecondary;
+
+    return base.textTheme.copyWith(
+      // العناوين الرئيسية
+      headlineLarge: TextStyle(
+        color: onBg,
+        fontWeight: FontWeight.w800,
+        fontSize: 24,
+        letterSpacing: -0.3,
+        height: 1.3,
+      ),
+      headlineMedium: TextStyle(
+        color: onBg,
+        fontWeight: FontWeight.w800,
+        fontSize: 20,
+        letterSpacing: -0.2,
+        height: 1.35,
+      ),
+      headlineSmall: TextStyle(
+        color: onBg,
+        fontWeight: FontWeight.w700,
+        fontSize: 18,
+        letterSpacing: -0.1,
+        height: 1.4,
+      ),
+
+      // العناوين الفرعية
+      titleLarge: TextStyle(
+        color: onBg,
+        fontWeight: FontWeight.w700,
+        fontSize: 16,
+        height: 1.4,
+      ),
+      titleMedium: TextStyle(
+        color: onBg,
+        fontWeight: FontWeight.w700,
+        fontSize: 15,
+        height: 1.4,
+      ),
+      titleSmall: TextStyle(
+        color: onBg,
+        fontWeight: FontWeight.w700,
+        fontSize: 13.5,
+        height: 1.4,
+      ),
+
+      // النصوص
+      bodyLarge: TextStyle(
+        color: onBg,
+        fontWeight: FontWeight.w500,
+        fontSize: 15,
+        height: 1.7,
+      ),
+      bodyMedium: TextStyle(
+        color: onBg,
+        fontWeight: FontWeight.w500,
+        fontSize: 14,
+        height: 1.65,
+      ),
+      bodySmall: TextStyle(
+        color: onBgSec,
+        fontWeight: FontWeight.w500,
+        fontSize: 12.5,
+        height: 1.5,
+      ),
+
+      // التسميات
+      labelLarge: TextStyle(
+        color: onBg,
+        fontWeight: FontWeight.w700,
+        fontSize: 14,
+        letterSpacing: 0.1,
+      ),
+      labelMedium: TextStyle(
+        color: onBg,
+        fontWeight: FontWeight.w600,
+        fontSize: 12.5,
+        letterSpacing: 0.1,
+      ),
+      labelSmall: TextStyle(
+        color: onBgSec,
+        fontWeight: FontWeight.w600,
+        fontSize: 11,
+        letterSpacing: 0.2,
       ),
     );
   }

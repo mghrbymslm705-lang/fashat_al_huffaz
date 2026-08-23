@@ -6,7 +6,9 @@ import '../../core/utils/icon_resolver.dart';
 import '../../domain/entities/category.dart';
 import '../pages/category/category_page.dart';
 
-/// بطاقة قسم مدمجة تظهر في الصفحة الرئيسية.
+/// بطاقة قسم بتصميم حيوي: شريط لوني علوي + أيقونة كبيرة + تدرج خفيف.
+///
+/// كل قسم له لون مميز يجعل البطاقات متميزة بصريًا.
 class CategoryCard extends StatelessWidget {
   const CategoryCard({super.key, required this.category, required this.count});
 
@@ -21,7 +23,8 @@ class CategoryCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final color = category.colorValue;
+    final color = AppColors.categoryColor(category.id);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Material(
       color: Colors.transparent,
@@ -36,75 +39,125 @@ class CategoryCard extends StatelessWidget {
         },
         child: Container(
           decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.surface,
+            color: isDark ? AppColors.surfaceDark : AppColors.surface,
             borderRadius: BorderRadius.circular(AppTheme.cardRadius),
+            border: Border.all(
+              color: isDark
+                  ? Colors.white.withValues(alpha: 0.06)
+                  : color.withValues(alpha: 0.15),
+              width: 1,
+            ),
             boxShadow: [
-              BoxShadow(
-                color: Colors.black.withValues(alpha: 0.05),
-                blurRadius: 10,
-                offset: const Offset(0, 4),
-              ),
+              if (!isDark)
+                BoxShadow(
+                  color: color.withValues(alpha: 0.08),
+                  blurRadius: 12,
+                  offset: const Offset(0, 4),
+                ),
             ],
           ),
-          child: Padding(
-            padding: const EdgeInsets.all(12),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // ── الشريط الملوّن العلوي ──
+              Container(
+                width: double.infinity,
+                height: 6,
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [
+                      color,
+                      color.withValues(alpha: 0.6),
+                    ],
+                  ),
+                  borderRadius: const BorderRadius.vertical(
+                    top: Radius.circular(AppTheme.cardRadius),
+                  ),
+                ),
+              ),
+              // ── المحتوى ──
+              Padding(
+                padding: const EdgeInsets.fromLTRB(14, 12, 14, 14),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Container(
-                      width: 44,
-                      height: 44,
-                      decoration: BoxDecoration(
-                        color: color.withValues(alpha: 0.12),
-                        borderRadius: BorderRadius.circular(13),
-                      ),
-                      child: Icon(
-                        IconResolver.resolve(category.icon),
-                        size: 24,
-                        color: color,
-                      ),
+                    // الأيقونة + العنوان
+                    Row(
+                      children: [
+                        Container(
+                          width: 46,
+                          height: 46,
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              begin: Alignment.topRight,
+                              end: Alignment.bottomLeft,
+                              colors: [
+                                color.withValues(alpha: isDark ? 0.25 : 0.15),
+                                color.withValues(alpha: isDark ? 0.12 : 0.06),
+                              ],
+                            ),
+                            borderRadius: BorderRadius.circular(13),
+                          ),
+                          child: Icon(
+                            IconResolver.resolve(category.icon),
+                            size: 24,
+                            color: color,
+                          ),
+                        ),
+                        const SizedBox(width: 12),
+                        Expanded(
+                          child: Text(
+                            category.name,
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                              fontWeight: FontWeight.w700,
+                              fontSize: 13.5,
+                              height: 1.3,
+                              color: isDark
+                                  ? Colors.white
+                                  : AppColors.textPrimary,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                    const SizedBox(width: 10),
-                    Expanded(
+                    const SizedBox(height: 10),
+                    // عدد الأنشطة
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 8, vertical: 3),
+                      decoration: BoxDecoration(
+                        color: color.withValues(alpha: 0.10),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
                       child: Text(
-                        category.name,
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(
-                          fontWeight: FontWeight.w800,
-                          fontSize: 13.5,
-                          height: 1.3,
+                        _countLabel(count),
+                        style: TextStyle(
+                          fontSize: 11,
+                          fontWeight: FontWeight.w600,
+                          color: color,
                         ),
                       ),
                     ),
+                    if (category.description.isNotEmpty) ...[
+                      const SizedBox(height: 6),
+                      Text(
+                        category.description,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          fontSize: 10.5,
+                          color: AppColors.textSecondary
+                              .withValues(alpha: 0.7),
+                          height: 1.4,
+                        ),
+                      ),
+                    ],
                   ],
                 ),
-                const SizedBox(height: 10),
-                Text(
-                  _countLabel(count),
-                  style: const TextStyle(
-                    fontSize: 11,
-                    fontWeight: FontWeight.w700,
-                    color: AppColors.textSecondary,
-                  ),
-                ),
-                if (category.description.isNotEmpty) ...[
-                  const SizedBox(height: 3),
-                  Text(
-                    category.description,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(
-                      fontSize: 10.5,
-                      color: AppColors.textSecondary,
-                      height: 1.45,
-                    ),
-                  ),
-                ],
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),

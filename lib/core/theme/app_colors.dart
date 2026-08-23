@@ -1,48 +1,137 @@
 import 'package:flutter/material.dart';
 
-/// لوحة الألوان المعتمدة في هوية التطبيق.
+/// لوحة ألوان "فسحة الحفّاظ" — هوية ترفيهية تربوية حديثة.
 ///
-/// أخضر للنمو والقرآن، أزرق للمرح، أصفر ذهبي للجوائز والحماس،
-/// مع خلفية بيضاء مائلة للرمادي الفاتح.
+/// تجمع بين الحيوية والهدوء: أخضر زمردي أساسي، ألوان مساعدة متناسقة،
+/// وخلفيات عاجية دافئة تمنح الشعور بالمرح والراحة والهوية القرآنية.
 class AppColors {
   AppColors._();
 
-  /// الأخضر الرئيسي (النمو والقرآن).
-  static const Color primary = Color(0xFF22C55E);
+  // ═══════════════════════════════════════════════════════
+  //  الألوان الأساسية
+  // ═══════════════════════════════════════════════════════
 
-  /// درجة أغمق من الأخضر للتفاصيل والتباين.
-  static const Color primaryDark = Color(0xFF16A34A);
+  /// الأخضر الزمردي الأساسي — حيوية وهدوء.
+  static const Color primary = Color(0xFF2E9E6E);
 
-  /// الأزرق (المرح والنشاط).
-  static const Color blue = Color(0xFF3B82F6);
+  /// أخضر أغمق للنصوص والعناصر النشطة.
+  static const Color primaryDark = Color(0xFF1F7A52);
 
-  /// الأصفر الذهبي (الجوائز والحماس).
-  static const Color gold = Color(0xFFFBBF24);
+  /// أخضر فاتح جدًا للخلفيات الخفيفة.
+  static const Color primaryLight = Color(0xFFE6F7EF);
 
-  /// برتقالي للحركة والنشاط.
-  static const Color orange = Color(0xFFF97316);
+  // ═══════════════════════════════════════════════════════
+  //  ألوان الأقسام (12 قسمًا — كل قسم لون مميز)
+  // ═══════════════════════════════════════════════════════
 
-  /// بنفسجي للعب الجماعية.
-  static const Color purple = Color(0xFF8B5CF6);
+  /// تركوازي — التثبيت والمراجعة.
+  static const Color teal = Color(0xFF3AAFA9);
 
-  /// وردي للأطفال.
-  static const Color pink = Color(0xFFEC4899);
+  /// أزرق سماوي — المسابقات القرآنية.
+  static const Color blue = Color(0xFF4A90D9);
 
-  /// سماوي للبرامج التربوية.
-  static const Color teal = Color(0xFF06B6D4);
+  /// ذهبي — السيرة والفقه والعقيدة.
+  static const Color gold = Color(0xFFD4A843);
 
-  /// خلفية فاتحة مائلة للرمادي.
-  static const Color backgroundLight = Color(0xFFF4F6F8);
+  /// بنفسجي — ألعاب الذاكرة والألغاز.
+  static const Color purple = Color(0xFF7C6FBF);
 
-  /// نص أساسي.
-  static const Color textPrimary = Color(0xFF1F2937);
+  /// وردي مرجاني — الأنشطة الجماعية.
+  static const Color pink = Color(0xFFD4789A);
 
-  /// نص ثانوي.
-  static const Color textSecondary = Color(0xFF6B7280);
+  /// برتقالي مشمشي — الأنشطة الحركية.
+  static const Color orange = Color(0xFFD98E4A);
 
-  /// خلفية البطاقات في الوضع الفاتح.
-  static const Color surface = Colors.white;
+  /// أحمر مطفأ — المسابقات السريعة.
+  static const Color red = Color(0xFFD4645C);
+
+  /// أخضر زمردي فاتح — الإبداع والتعبير.
+  static const Color greenLight = Color(0xFF4DB6A0);
+
+  /// أزرق فاتح — البحث والاكتشاف.
+  static const Color blueLight = Color(0xFF5B9BD5);
+
+  /// بني ذهبي — القراءة والمكتبة.
+  static const Color brown = Color(0xFFB89B5E);
+
+  /// بنفسجي فاتح — الاستماع والإنصات.
+  static const Color purpleLight = Color(0xFF9B8CC4);
+
+  /// خطأ / أحمر.
+  static const Color error = Color(0xFFD4645C);
+
+  // ═══════════════════════════════════════════════════════
+  //  الخلفيات والأسطح
+  // ═══════════════════════════════════════════════════════
+
+  /// خلفية عاجية دافئة — main background.
+  static const Color background = Color(0xFFF9F6F1);
+
+  /// خلفية البطاقات في الوضع الفاتح: أبيض عاجي دافئ.
+  static const Color surface = Color(0xFFFEFDFB);
 
   /// خلفية البطاقات في الوضع الليلي.
-  static const Color surfaceDark = Color(0xFF1E2430);
+  static const Color surfaceDark = Color(0xFF1C2028);
+
+  /// خلفية الشريط السفلي.
+  static const Color navBackground = Color(0xFFFEFDFB);
+
+  // ═══════════════════════════════════════════════════════
+  //  النصوص
+  // ═══════════════════════════════════════════════════════
+
+  /// نص أساسي: بني غامق (أرقى من الأسود النقي).
+  static const Color textPrimary = Color(0xFF2C2417);
+
+  /// نص ثانوي: رمادي بني.
+  static const Color textSecondary = Color(0xFF8A7E72);
+
+  /// نص على خلفيات ملونة.
+  static const Color textOnPrimary = Color(0xFFFFFFFF);
+
+  // ═══════════════════════════════════════════════════════
+  //  الفواصل والحدود
+  // ═══════════════════════════════════════════════════════
+
+  /// فواصل ناعمة.
+  static const Color divider = Color(0xFFE8E2DA);
+
+  /// حدود البطاقات.
+  static const Color border = Color(0xFFE0D8CE);
+
+  // ═══════════════════════════════════════════════════════
+  //  مساعدة: ألوان الأقسام حسب المعرّف
+  // ═══════════════════════════════════════════════════════
+
+  /// يُرجع لون القسم حسب المعرّف (id).
+  static Color categoryColor(String id) {
+    switch (id) {
+      case 'hifdh':
+        return primary;
+      case 'murajaa':
+        return teal;
+      case 'quranic':
+        return blue;
+      case 'islamic':
+        return gold;
+      case 'memory':
+        return purple;
+      case 'group':
+        return pink;
+      case 'kinetic':
+        return orange;
+      case 'quick':
+        return red;
+      case 'creative':
+        return greenLight;
+      case 'research':
+        return blueLight;
+      case 'reading':
+        return brown;
+      case 'listen':
+        return purpleLight;
+      default:
+        return primary;
+    }
+  }
 }

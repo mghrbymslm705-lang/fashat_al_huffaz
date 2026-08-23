@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../../core/theme/app_colors.dart';
+
 /// صفحة "سياسة الخصوصية".
 ///
 /// نص ثابت يوضح سياسة التطبيق: لا يجمع بيانات، لا يتصل بخدمات خارجية
@@ -72,7 +74,7 @@ class _PolicyItem extends StatelessWidget {
         children: [
           Row(
             children: [
-              Icon(icon, color: const Color(0xFF22C55E), size: 20),
+              Icon(icon, color: AppColors.primary, size: 20),
               const SizedBox(width: 8),
               Text(
                 title,

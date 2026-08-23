@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../core/constants/app_constants.dart';
+import '../../../core/theme/app_colors.dart';
 import '../../../core/utils/app_launcher.dart';
 
 /// صفحة "تواصل معنا": بريد + واتساب (حسب ما يُعدّله المشرف).
@@ -23,7 +24,7 @@ class ContactPage extends StatelessWidget {
           const SizedBox(height: 20),
           Card(
             child: ListTile(
-              leading: const Icon(Icons.mail_rounded, color: Color(0xFF3B82F6)),
+              leading: const Icon(Icons.mail_rounded, color: AppColors.blue),
               title: const Text('البريد الإلكتروني',
                   style: TextStyle(fontWeight: FontWeight.w700, fontSize: 14)),
               subtitle: const Text(AppConstants.contactEmail),
@@ -35,7 +36,7 @@ class ContactPage extends StatelessWidget {
             Card(
               child: ListTile(
                 leading:
-                    const Icon(Icons.chat_rounded, color: Color(0xFF22C55E)),
+                    const Icon(Icons.chat_rounded, color: AppColors.primary),
                 title: const Text('واتساب',
                     style: TextStyle(fontWeight: FontWeight.w700, fontSize: 14)),
                 subtitle: const Text(AppConstants.contactWhatsApp),
@@ -51,7 +52,7 @@ class ContactPage extends StatelessWidget {
             'ملاحظة: عدّل بيانات التواصل في الملف\n'
             'lib/core/constants/app_constants.dart',
             textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 11, color: Color(0xFF9CA3AF)),
+            style: TextStyle(fontSize: 11, color: AppColors.textSecondary),
           ),
         ],
       ),

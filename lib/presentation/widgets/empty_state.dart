@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
-/// حالة فارغة جميلة تُعرض عند عدم وجود بيانات أو نتائج.
+import '../../core/theme/app_colors.dart';
+
+/// حالة فارغة أنيقة بتصميم بسيط وهادئ.
 class EmptyState extends StatelessWidget {
   const EmptyState({
     super.key,
@@ -18,6 +20,7 @@ class EmptyState extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return Center(
       child: Padding(
         padding: const EdgeInsets.all(32),
@@ -25,27 +28,40 @@ class EmptyState extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             Container(
-              padding: const EdgeInsets.all(22),
+              padding: const EdgeInsets.all(20),
               decoration: BoxDecoration(
-                color: (isDark ? Colors.white : Colors.black).withValues(alpha: 0.05),
+                color: isDark
+                    ? Colors.white.withValues(alpha: 0.04)
+                    : Colors.black.withValues(alpha: 0.03),
                 shape: BoxShape.circle,
               ),
-              child: Icon(icon, size: 56, color: Colors.grey),
+              child: Icon(
+                icon,
+                size: 48,
+                color: isDark
+                    ? Colors.white24
+                    : Colors.black.withValues(alpha: 0.15),
+              ),
             ),
-            const SizedBox(height: 18),
+            const SizedBox(height: 16),
             Text(
               title,
               textAlign: TextAlign.center,
-              style: const TextStyle(fontWeight: FontWeight.w800, fontSize: 16),
+              style: TextStyle(
+                fontWeight: FontWeight.w700,
+                fontSize: 15,
+                color: isDark ? Colors.white70 : AppColors.textPrimary,
+              ),
             ),
             if (message != null) ...[
-              const SizedBox(height: 8),
+              const SizedBox(height: 6),
               Text(
                 message!,
                 textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: Theme.of(context).colorScheme.onSurfaceVariant,
+                style: const TextStyle(
+                  color: AppColors.textSecondary,
                   height: 1.6,
+                  fontSize: 13,
                 ),
               ),
             ],

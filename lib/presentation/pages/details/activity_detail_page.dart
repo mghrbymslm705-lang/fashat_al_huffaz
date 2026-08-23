@@ -247,7 +247,7 @@ class _TitleBlock extends StatelessWidget {
             child: const Text(
               AppConstants.demoBadge,
               style: TextStyle(
-                color: Color(0xFFB45309),
+                color: AppColors.gold,
                 fontWeight: FontWeight.w700,
                 fontSize: 11,
               ),
@@ -255,7 +255,7 @@ class _TitleBlock extends StatelessWidget {
           ),
         Text(
           activity.title,
-          style: const TextStyle(fontWeight: FontWeight.w900, fontSize: 20),
+          style: const TextStyle(fontWeight: FontWeight.w800, fontSize: 20),
         ),
         if (activity.source.file.isNotEmpty) ...[
           const SizedBox(height: 6),
