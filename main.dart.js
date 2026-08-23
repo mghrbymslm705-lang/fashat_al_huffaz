@@ -53537,9 +53537,10 @@ return A.k(A.ach(q,B.o2),$async$ww)
 case 5:case 3:return A.p(null,r)}})
 return A.q($async$ww,r)},
 Jd(a){return this.alJ(a)},
-alJ(a){var s=0,r=A.r(t.H),q=this,p
+alJ(a){var s=0,r=A.r(t.H),q=this,p,o
 var $async$Jd=A.t(function(b,c){if(b===1)return A.o(c,r)
-for(;;)switch(s){case 0:try{q.Y1(a)}catch(o){q.Y1(a)}return A.p(null,r)}})
+for(;;)switch(s){case 0:try{p=v.G.promptInstall()
+if(J.d(p,"unavailable"))q.Y1(a)}catch(n){q.Y1(a)}return A.p(null,r)}})
 return A.q($async$Jd,r)},
 Y1(a){var s=null
 a.ao(t.Pu).f.zV(A.axD(new A.GG(B.h,"\u062d\u0633\u0646\u0627\u064b",new A.adw(),s),s,s,s,s,B.W,s,B.akd,s,B.Rr,s,s,s,s,s,s,s,s,s,s))}}

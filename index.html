@@ -54,6 +54,12 @@
     function promptInstall() {
       if (deferredPrompt) {
         deferredPrompt.prompt();
+        deferredPrompt.userChoice.then((choiceResult) => {
+          if (choiceResult.outcome === 'accepted') {
+            console.log('تم قبول التثبيت');
+          }
+          deferredPrompt = null;
+        });
         return 'available';
       }
       return 'unavailable';
