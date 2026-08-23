@@ -41,6 +41,9 @@ dependencies:
   # مشاركة التطبيق
   share_plus: ^10.0.0
 
+  # تشغيل الصوت في الخلفية
+  just_audio: ^0.9.42
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -72,6 +75,8 @@ flutter:
     # مجلد الأنشطة: أي ملف JSON يُضاف هنا يُحمّل تلقائيًا دون تعديل الكود
     - assets/data/activities/
     - assets/icon/
+    # ملفات الصوت
+    - assets/audio/
 
   fonts:
     - family: Tajawal

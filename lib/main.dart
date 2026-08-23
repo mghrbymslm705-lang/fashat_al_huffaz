@@ -5,6 +5,7 @@ import 'data/datasources/prefs_datasource.dart';
 import 'data/repositories/activity_repository_impl.dart';
 import 'presentation/app.dart';
 import 'presentation/providers/activity_provider.dart';
+import 'presentation/providers/audio_provider.dart';
 import 'presentation/providers/settings_provider.dart';
 
 /// نقطة دخول تطبيق "فسحة الحفّاظ".
@@ -27,10 +28,14 @@ Future<void> main() async {
     activityProvider.initLastActivity(),
   ]);
 
+  // مزود الصوت: يعمل تلقائيًا عند بدء التطبيق.
+  final audioProvider = AudioProvider();
+
   runApp(
     FashatApp(
       settings: settings,
       activityProvider: activityProvider,
+      audioProvider: audioProvider,
     ),
   );
 }

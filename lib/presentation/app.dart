@@ -11,6 +11,7 @@ import 'pages/search/search_page.dart';
 import 'pages/settings/settings_page.dart';
 import 'pages/suggest/suggest_page.dart';
 import 'providers/activity_provider.dart';
+import 'providers/audio_provider.dart';
 import 'providers/settings_provider.dart';
 import 'widgets/app_drawer.dart';
 
@@ -20,10 +21,12 @@ class FashatApp extends StatelessWidget {
     super.key,
     required this.settings,
     required this.activityProvider,
+    required this.audioProvider,
   });
 
   final SettingsProvider settings;
   final ActivityProvider activityProvider;
+  final AudioProvider audioProvider;
 
   @override
   Widget build(BuildContext context) {
@@ -31,6 +34,7 @@ class FashatApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider<SettingsProvider>.value(value: settings),
         ChangeNotifierProvider<ActivityProvider>.value(value: activityProvider),
+        ChangeNotifierProvider<AudioProvider>.value(value: audioProvider),
       ],
       child: Consumer<SettingsProvider>(
         builder: (context, settings, _) {

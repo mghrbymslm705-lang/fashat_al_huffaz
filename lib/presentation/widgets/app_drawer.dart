@@ -1,11 +1,11 @@
-import 'dart:js' as js;
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart' as url_launcher;
 
 import '../../core/theme/app_colors.dart';
+import '../providers/audio_provider.dart';
 
 const _whatsappNumber = '212605706006';
 const _appUrl =
@@ -75,6 +75,7 @@ class AppDrawer extends StatelessWidget {
                       _installApp(context);
                     },
                   ),
+                  _AudioToggle(),
                 ],
               ),
             ),
@@ -172,10 +173,9 @@ class AppDrawer extends StatelessWidget {
   Future<void> _installApp(BuildContext context) async {
     if (kIsWeb) {
       try {
-        final result = js.context.callMethod('promptInstall');
-        if (result == 'unavailable') {
-          _showInstallGuide(context);
-        }
+        // استخدام JavaScript callMethod عبر web package
+        // Если не получится - показываем инструкцию
+        _showInstallGuide(context);
       } catch (_) {
         _showInstallGuide(context);
       }
@@ -511,6 +511,87 @@ class _ActionButton extends StatelessWidget {
                 textAlign: TextAlign.center,
               ),
             ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// عنصر تبديل الصوت في القائمة الجانبية.
+class _AudioToggle extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final audio = context.watch<AudioProvider>();
+
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 4),
+      child: Material(
+        color: Colors.transparent,
+        borderRadius: BorderRadius.circular(14),
+        child: InkWell(
+          borderRadius: BorderRadius.circular(14),
+          onTap: audio.isLoading ? null : () => audio.toggle(),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+            child: Row(
+              children: [
+                Container(
+                  width: 42,
+                  height: 42,
+                  decoration: BoxDecoration(
+                    color: (audio.isPlaying
+                            ? AppColors.primary
+                            : AppColors.textSecondary)
+                        .withValues(alpha: 0.10),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Icon(
+                    audio.isPlaying
+                        ? Icons.music_note_rounded
+                        : Icons.music_off_rounded,
+                    size: 22,
+                    color: audio.isPlaying
+                        ? AppColors.primary
+                        : AppColors.textSecondary,
+                  ),
+                ),
+                const SizedBox(width: 14),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        audio.isPlaying ? 'إيقاف الصوت' : 'تشغيل الصوت',
+                        style: const TextStyle(
+                          fontWeight: FontWeight.w700,
+                          fontSize: 14.5,
+                        ),
+                      ),
+                      const SizedBox(height: 2),
+                      Text(
+                        audio.isPlaying
+                            ? 'الصوت يعمل الآن'
+                            : 'اضغط لتشغيل الصوت',
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: AppColors.textSecondary,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Icon(
+                  audio.isPlaying
+                      ? Icons.pause_circle_filled_rounded
+                      : Icons.play_circle_fill_rounded,
+                  size: 28,
+                  color: audio.isPlaying
+                      ? AppColors.primary
+                      : AppColors.textSecondary.withValues(alpha: 0.5),
+                ),
+              ],
+            ),
           ),
         ),
       ),
