@@ -62,6 +62,16 @@ class AppDrawer extends StatelessWidget {
                       onOpenSettings?.call();
                     },
                   ),
+                  _DrawerTile(
+                    icon: Icons.install_mobile_rounded,
+                    title: 'تثبيت التطبيق',
+                    subtitle: 'أضفه إلى شاشة هاتفك',
+                    color: AppColors.primary,
+                    onTap: () {
+                      Navigator.pop(context);
+                      _installApp(context);
+                    },
+                  ),
                 ],
               ),
             ),
@@ -154,6 +164,25 @@ class AppDrawer extends StatelessWidget {
       await url_launcher.launchUrl(url,
           mode: url_launcher.LaunchMode.externalApplication);
     }
+  }
+
+  void _installApp(BuildContext context) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: const Text(
+          'لتثبيت التطبيق على هاتفك:\n'
+          'Android: اضغط زر المشاركة ← "إضافة إلى الشاشة الرئيسية"\n'
+          'iPhone: اضغط زر المشاركة ← "إضافة إلى الشاشة الرئيسية"',
+          textDirection: TextDirection.rtl,
+        ),
+        duration: const Duration(seconds: 5),
+        action: SnackBarAction(
+          label: 'حسناً',
+          textColor: Colors.white,
+          onPressed: () {},
+        ),
+      ),
+    );
   }
 }
 
