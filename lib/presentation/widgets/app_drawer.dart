@@ -1,4 +1,4 @@
-import 'dart:js_interop';
+import 'dart:js' as js;
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -8,10 +8,6 @@ import 'package:url_launcher/url_launcher.dart' as url_launcher;
 
 import '../../core/theme/app_colors.dart';
 import '../providers/audio_provider.dart';
-
-/// ربط مع دالة JavaScript في المتصفح
-@JS('promptInstall')
-external String _promptInstallJS();
 
 const _whatsappNumber = '212605706006';
 const _appUrl =
@@ -166,9 +162,23 @@ class AppDrawer extends StatelessWidget {
   }
 
   Future<void> _shareApp() async {
-    await Share.share(
-      'فسحة الحفّاظ - مكتبة الأنشطة التربوية لحلقات تحفيظ القرآن الكريم\n\n$_appUrl',
-    );
+    if (kIsWeb) {
+      try {
+        final data = js.context.callMethod('Object', []);
+        data['title'] = 'فسحة الحفّاظ';
+        data['text'] = 'فسحة الحفّاظ - مكتبة الأنشطة التربوية لحلقات تحفيظ القرآن الكريم\n\nتطبيق يحتوي على ألعاب وأنشطة تربوية متنوعة لتعلم القرآن بطرق ممتعة.';
+        data['url'] = _appUrl;
+        js.context.callMethod('shareApp', [data]);
+      } catch (_) {
+        await Share.share(
+          'فسحة الحفّاظ - مكتبة الأنشطة التربوية لحلقات تحفيظ القرآن الكريم\n\n$_appUrl',
+        );
+      }
+    } else {
+      await Share.share(
+        'فسحة الحفّاظ - مكتبة الأنشطة التربوية لحلقات تحفيظ القرآن الكريم\n\n$_appUrl',
+      );
+    }
   }
 
   Future<void> _suggestActivity() async {
@@ -184,8 +194,7 @@ class AppDrawer extends StatelessWidget {
   Future<void> _installApp(BuildContext context) async {
     if (kIsWeb) {
       try {
-        // استدعاء دالة JavaScript لبدء التثبيت
-        final result = _promptInstallJS();
+        final result = js.context.callMethod('promptInstall');
         if (result == 'unavailable') {
           _showInstallGuide(context);
         }
