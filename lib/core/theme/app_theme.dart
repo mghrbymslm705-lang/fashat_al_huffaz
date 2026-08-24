@@ -73,7 +73,6 @@ class AppTheme {
           fontFamily: fontFamily,
           fontWeight: FontWeight.w700,
           fontSize: 18,
-          letterSpacing: -0.2,
           color: isDark ? Colors.white : AppColors.textPrimary,
         ),
         iconTheme: IconThemeData(
@@ -107,7 +106,7 @@ class AppTheme {
         ),
         labelStyle: const TextStyle(
           fontFamily: fontFamily,
-          fontWeight: FontWeight.w600,
+          fontWeight: FontWeight.w400,
           fontSize: 12,
         ),
         padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
@@ -211,7 +210,7 @@ class AppTheme {
             final selected = states.contains(WidgetState.selected);
             return TextStyle(
               fontFamily: fontFamily,
-              fontWeight: selected ? FontWeight.w700 : FontWeight.w500,
+              fontWeight: selected ? FontWeight.w700 : FontWeight.w400,
               fontSize: selected ? 12 : 11,
               color: selected
                   ? AppColors.primary
@@ -262,7 +261,7 @@ class AppTheme {
         ),
         contentTextStyle: const TextStyle(
           fontFamily: fontFamily,
-          fontWeight: FontWeight.w600,
+          fontWeight: FontWeight.w400,
         ),
       ),
     );
@@ -278,23 +277,20 @@ class AppTheme {
       // العناوين الرئيسية
       headlineLarge: TextStyle(
         color: onBg,
-        fontWeight: FontWeight.w800,
+        fontWeight: FontWeight.w700,
         fontSize: 24,
-        letterSpacing: -0.3,
-        height: 1.3,
+        height: 1.4,
       ),
       headlineMedium: TextStyle(
         color: onBg,
-        fontWeight: FontWeight.w800,
+        fontWeight: FontWeight.w700,
         fontSize: 20,
-        letterSpacing: -0.2,
-        height: 1.35,
+        height: 1.4,
       ),
       headlineSmall: TextStyle(
         color: onBg,
         fontWeight: FontWeight.w700,
         fontSize: 18,
-        letterSpacing: -0.1,
         height: 1.4,
       ),
 
@@ -321,19 +317,19 @@ class AppTheme {
       // النصوص
       bodyLarge: TextStyle(
         color: onBg,
-        fontWeight: FontWeight.w500,
+        fontWeight: FontWeight.w400,
         fontSize: 15,
         height: 1.7,
       ),
       bodyMedium: TextStyle(
         color: onBg,
-        fontWeight: FontWeight.w500,
+        fontWeight: FontWeight.w400,
         fontSize: 14,
         height: 1.65,
       ),
       bodySmall: TextStyle(
         color: onBgSec,
-        fontWeight: FontWeight.w500,
+        fontWeight: FontWeight.w400,
         fontSize: 12.5,
         height: 1.5,
       ),
@@ -343,19 +339,16 @@ class AppTheme {
         color: onBg,
         fontWeight: FontWeight.w700,
         fontSize: 14,
-        letterSpacing: 0.1,
       ),
       labelMedium: TextStyle(
         color: onBg,
-        fontWeight: FontWeight.w600,
+        fontWeight: FontWeight.w400,
         fontSize: 12.5,
-        letterSpacing: 0.1,
       ),
       labelSmall: TextStyle(
         color: onBgSec,
-        fontWeight: FontWeight.w600,
+        fontWeight: FontWeight.w400,
         fontSize: 11,
-        letterSpacing: 0.2,
       ),
     );
   }

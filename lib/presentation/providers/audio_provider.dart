@@ -2,9 +2,6 @@ import 'package:flutter/foundation.dart';
 import 'package:just_audio/just_audio.dart';
 
 /// مزود إدارة الصوت: تشغيل تلقائي عند فتح التطبيق + تكرار مستمر + إيقاف يدوي.
-///
-/// الصوت يعمل تلقائيًا كل مرة يُفتح فيها التطبيق.
-/// الإيقاف فقط يدويًا من القائمة الجانبية.
 class AudioProvider extends ChangeNotifier {
   AudioProvider() {
     _init();
@@ -20,14 +17,13 @@ class AudioProvider extends ChangeNotifier {
   /// تهيئة المشغّل: يُشغّل الصوت تلقائيًا عند بدء التطبيق.
   Future<void> _init() async {
     try {
-      await _player.setAsset('assets/audio/background.mp3');
+      await _player.setUrl(
+        'https://raw.githubusercontent.com/mghrbymslm705-lang/fashat_al_huffaz/main/assets/audio/background.mp3',
+      );
       await _player.setLoopMode(LoopMode.one);
-
-      // تشغيل تلقائي دائمًا عند فتح التطبيق
       await _player.play();
       _isPlaying = true;
     } catch (_) {
-      // إذا لم يكن هناك ملف صوتي، نتجاهل الخطأ
       _isPlaying = false;
     }
     _isLoading = false;
