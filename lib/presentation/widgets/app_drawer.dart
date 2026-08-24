@@ -53,11 +53,14 @@ class AppDrawer extends StatelessWidget {
                     onTap: () => _shareApp(),
                   ),
                   _DrawerTile(
-                    icon: Icons.chat_rounded,
-                    title: 'تواصل مع المشرف',
-                    subtitle: 'عبر واتساب',
-                    color: const Color(0xFF25D366),
-                    onTap: () => _openWhatsApp(),
+                    icon: Icons.lightbulb_rounded,
+                    title: 'اقتراح نشاط',
+                    subtitle: 'اقترح نشاطًا جديدًا على التطبيق',
+                    color: AppColors.gold,
+                    onTap: () {
+                      Navigator.pop(context);
+                      _suggestActivity();
+                    },
                   ),
                   const SizedBox(height: 8),
                   const Divider(indent: 16, endIndent: 16),
@@ -168,8 +171,10 @@ class AppDrawer extends StatelessWidget {
     );
   }
 
-  Future<void> _openWhatsApp() async {
-    final url = Uri.parse('https://wa.me/$_whatsappNumber');
+  Future<void> _suggestActivity() async {
+    final url = Uri.parse(
+      'https://wa.me/$_whatsappNumber?text=${Uri.encodeFull('مرحبًا، أريد اقتراح نشاط جديد لتطبيق فسحة الحفّاظ:\n\n• اسم النشاط:\n• القسم:\n• الفئة العمرية:\n• 설명 مختصر:\n')}',
+    );
     if (await url_launcher.canLaunchUrl(url)) {
       await url_launcher.launchUrl(url,
           mode: url_launcher.LaunchMode.externalApplication);
