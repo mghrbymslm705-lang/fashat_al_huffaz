@@ -70,6 +70,21 @@
       }
       return 'unavailable';
     }
+
+    // مشاركة التطبيق عبر Web Share API
+    function shareApp(data) {
+      if (navigator.share) {
+        navigator.share({
+          title: data.title,
+          text: data.text,
+          url: data.url
+        }).catch(() => {});
+      } else {
+        // نسخ الرابط
+        navigator.clipboard.writeText(data.url);
+        alert('تم نسخ رابط التطبيق');
+      }
+    }
   </script>
 </body>
 </html>
