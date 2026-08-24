@@ -255,7 +255,7 @@ class _CardHeader extends StatelessWidget {
                   style: TextStyle(
                       color: Colors.white,
                       fontSize: 10,
-                      fontWeight: FontWeight.w600),
+                      fontWeight: FontWeight.w400),
                 ),
               ),
             ),

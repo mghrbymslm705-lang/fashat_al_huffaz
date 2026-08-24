@@ -134,7 +134,7 @@ class AppDrawer extends StatelessWidget {
             style: TextStyle(
               color: Colors.white,
               fontSize: 22,
-              fontWeight: FontWeight.w800,
+              fontWeight: FontWeight.w700,
             ),
           ),
           const SizedBox(height: 4),
@@ -371,7 +371,7 @@ class _AboutSheet extends StatelessWidget {
                   'فسحة الحفّاظ',
                   style: TextStyle(
                     fontSize: 22,
-                    fontWeight: FontWeight.w800,
+                    fontWeight: FontWeight.w700,
                   ),
                 ),
               ),
@@ -476,7 +476,7 @@ class _AboutSection extends StatelessWidget {
           Text(
             title,
             style: const TextStyle(
-              fontWeight: FontWeight.w800,
+              fontWeight: FontWeight.w700,
               fontSize: 14.5,
               color: AppColors.primaryDark,
             ),

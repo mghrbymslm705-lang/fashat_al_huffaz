@@ -135,7 +135,7 @@ class CategoryCard extends StatelessWidget {
                         _countLabel(count),
                         style: TextStyle(
                           fontSize: 11,
-                          fontWeight: FontWeight.w600,
+                          fontWeight: FontWeight.w400,
                           color: color,
                         ),
                       ),

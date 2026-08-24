@@ -117,7 +117,7 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
                                       child: Text(
                                         '${i + 1}',
                                         style: const TextStyle(
-                                          fontWeight: FontWeight.w800,
+                                          fontWeight: FontWeight.w700,
                                           fontSize: 12,
                                           color: AppColors.blue,
                                         ),
@@ -255,7 +255,7 @@ class _TitleBlock extends StatelessWidget {
           ),
         Text(
           activity.title,
-          style: const TextStyle(fontWeight: FontWeight.w800, fontSize: 20),
+          style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 20),
         ),
         if (activity.source.file.isNotEmpty) ...[
           const SizedBox(height: 6),
@@ -372,7 +372,7 @@ class _DetailSection extends StatelessWidget {
               const SizedBox(width: 8),
               Text(
                 title,
-                style: const TextStyle(fontWeight: FontWeight.w800, fontSize: 14),
+                style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 14),
               ),
             ],
           ),
@@ -465,7 +465,7 @@ class _SourceBox extends StatelessWidget {
                 side: const BorderSide(color: AppColors.primary),
                 minimumSize: const Size(double.infinity, 42),
                 textStyle: const TextStyle(
-                  fontWeight: FontWeight.w800,
+                  fontWeight: FontWeight.w700,
                   fontSize: 13.5,
                 ),
               ),
@@ -515,7 +515,7 @@ class _WatchButton extends StatelessWidget {
       style: FilledButton.styleFrom(
         minimumSize: const Size(double.infinity, 54),
         backgroundColor: AppColors.primary,
-        textStyle: const TextStyle(fontWeight: FontWeight.w800, fontSize: 15),
+        textStyle: const TextStyle(fontWeight: FontWeight.w700, fontSize: 15),
       ),
       icon: const Icon(Icons.play_circle_fill_rounded, size: 28),
       label: const Text('مشاهدة الشرح'),

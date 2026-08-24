@@ -87,6 +87,25 @@ class _RootShellState extends State<RootShell> {
 
   static const int _suggestTab = 3;
 
+  final _pages = <Widget?>[null, null, null, null];
+
+  Widget _getPage(int index) {
+    if (_pages[index] != null) return _pages[index]!;
+    switch (index) {
+      case 0:
+        _pages[0] = HomePage(
+          onOpenSuggest: () => setState(() => _index = _suggestTab),
+        );
+      case 1:
+        _pages[1] = const SearchPage();
+      case 2:
+        _pages[2] = FavoritesPage(onExplore: () => setState(() => _index = 0));
+      case 3:
+        _pages[3] = const SuggestPage();
+    }
+    return _pages[index]!;
+  }
+
   @override
   void initState() {
     super.initState();
@@ -97,15 +116,6 @@ class _RootShellState extends State<RootShell> {
 
   @override
   Widget build(BuildContext context) {
-    final pages = <Widget>[
-      HomePage(
-        onOpenSuggest: () => setState(() => _index = _suggestTab),
-      ),
-      const SearchPage(),
-      FavoritesPage(onExplore: () => setState(() => _index = 0)),
-      const SuggestPage(),
-    ];
-
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
@@ -123,7 +133,7 @@ class _RootShellState extends State<RootShell> {
       ),
       body: Stack(
         children: [
-          IndexedStack(index: _index, children: pages),
+          _getPage(_index),
           // زر القائمة الجانبية
           if (_index == 0)
             Positioned(
@@ -291,7 +301,7 @@ class _NavItem extends StatelessWidget {
               label,
               style: TextStyle(
                 fontSize: 10.5,
-                fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
+                fontWeight: isSelected ? FontWeight.w700 : FontWeight.w400,
                 color: color,
                 height: 1.2,
               ),

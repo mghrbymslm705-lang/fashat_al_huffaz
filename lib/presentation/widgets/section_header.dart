@@ -68,7 +68,7 @@ class SectionHeader extends StatelessWidget {
                     subtitle!,
                     style: TextStyle(
                       fontSize: 11.5,
-                      fontWeight: FontWeight.w500,
+                      fontWeight: FontWeight.w400,
                       color: AppColors.textSecondary
                           .withValues(alpha: 0.8),
                     ),

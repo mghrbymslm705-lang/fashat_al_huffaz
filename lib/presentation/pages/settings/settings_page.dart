@@ -325,7 +325,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     Text(
                       'استيراد المحتوى',
                       style:
-                          TextStyle(fontWeight: FontWeight.w800, fontSize: 14),
+                          TextStyle(fontWeight: FontWeight.w700, fontSize: 14),
                     ),
                     SizedBox(height: 2),
                     Text(
@@ -415,7 +415,7 @@ class _SectionTitle extends StatelessWidget {
       title,
       style: const TextStyle(
         fontSize: 12.5,
-        fontWeight: FontWeight.w800,
+        fontWeight: FontWeight.w700,
         color: AppColors.textSecondary,
       ),
     );
@@ -545,7 +545,7 @@ class _Segmented<T> extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 12,
                     fontWeight:
-                        isSelected ? FontWeight.w800 : FontWeight.w600,
+                        isSelected ? FontWeight.w700 : FontWeight.w400,
                     color: isSelected ? Colors.white : fg,
                   ),
                 ),
@@ -580,7 +580,7 @@ class _InfoTile extends StatelessWidget {
       leading: _RowIcon(icon: icon, color: color),
       title: Text(
         title,
-        style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 14),
+        style: const TextStyle(fontWeight: FontWeight.w400, fontSize: 14),
       ),
       trailing: const Icon(
         Icons.chevron_left_rounded,
@@ -625,7 +625,7 @@ class _ImportStatus extends StatelessWidget {
               style: TextStyle(
                 fontSize: 11.5,
                 height: 1.5,
-                fontWeight: FontWeight.w600,
+                fontWeight: FontWeight.w400,
                 color: color,
               ),
             ),

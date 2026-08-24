@@ -282,7 +282,7 @@ class _RangeSliderTile extends StatelessWidget {
             children: [
               Text(
                 title,
-                style: const TextStyle(fontWeight: FontWeight.w800, fontSize: 13),
+                style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 13),
               ),
               Text(
                 '${values.start.round()} - ${values.end.round()}',

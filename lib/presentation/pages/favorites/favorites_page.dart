@@ -45,7 +45,7 @@ class FavoritesPage extends StatelessWidget {
                 _countText(favorites.length),
                 style: const TextStyle(
                   color: AppColors.primaryDark,
-                  fontWeight: FontWeight.w800,
+                  fontWeight: FontWeight.w700,
                   fontSize: 11.5,
                 ),
               ),
@@ -200,7 +200,7 @@ class _FavoriteCardState extends State<_FavoriteCard> {
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
                             style: const TextStyle(
-                              fontWeight: FontWeight.w800,
+                              fontWeight: FontWeight.w700,
                               fontSize: 15,
                               height: 1.35,
                             ),
@@ -282,7 +282,7 @@ class _FavoriteCardState extends State<_FavoriteCard> {
                           ),
                           textStyle: const TextStyle(
                             fontSize: 13,
-                            fontWeight: FontWeight.w800,
+                            fontWeight: FontWeight.w700,
                           ),
                         ),
                       ),
@@ -323,7 +323,7 @@ class _MiniBadge extends StatelessWidget {
             style: const TextStyle(
               color: AppColors.textSecondary,
               fontSize: 11,
-              fontWeight: FontWeight.w600,
+              fontWeight: FontWeight.w400,
             ),
           ),
         ],
@@ -363,7 +363,7 @@ class _MovementTag extends StatelessWidget {
             style: const TextStyle(
               color: AppColors.primaryDark,
               fontSize: 11,
-              fontWeight: FontWeight.w800,
+              fontWeight: FontWeight.w700,
             ),
           ),
         ],

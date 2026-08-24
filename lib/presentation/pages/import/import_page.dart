@@ -476,7 +476,7 @@ class _ImportPageState extends State<ImportPage> {
         ),
         title: const Text(
           'أدوات متقدمة',
-          style: TextStyle(fontWeight: FontWeight.w800, fontSize: 14),
+          style: TextStyle(fontWeight: FontWeight.w700, fontSize: 14),
         ),
         subtitle: const Text(
           'تصدير القالب وتنزيل الملفات الأصلية',
@@ -575,7 +575,7 @@ class _StatsCard extends StatelessWidget {
                     '${stats[i].value}',
                     style: const TextStyle(
                       color: Colors.white,
-                      fontWeight: FontWeight.w800,
+                      fontWeight: FontWeight.w700,
                       fontSize: 18,
                     ),
                   ),
@@ -691,7 +691,7 @@ class _ImportCard extends StatelessWidget {
               Expanded(
                 child: Text(
                   title,
-                  style: const TextStyle(fontWeight: FontWeight.w800, fontSize: 14),
+                  style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 14),
                 ),
               ),
             ],
@@ -940,7 +940,7 @@ class _PreviewPanel extends StatelessWidget {
                 child: Text(
                   'معاينة قبل الاستيراد',
                   style: TextStyle(
-                    fontWeight: FontWeight.w800,
+                    fontWeight: FontWeight.w700,
                     fontSize: 14,
                     color: AppColors.primaryDark,
                   ),
@@ -1153,7 +1153,7 @@ class _ResultCard extends StatelessWidget {
                 color: color,
                 fontSize: 12,
                 height: 1.6,
-                fontWeight: FontWeight.w600,
+                fontWeight: FontWeight.w400,
               ),
             ),
           ),

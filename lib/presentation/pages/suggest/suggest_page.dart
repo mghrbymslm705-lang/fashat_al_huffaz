@@ -236,7 +236,7 @@ class _SuggestPageState extends State<SuggestPage> {
                   Text(
                     '$current',
                     style: const TextStyle(
-                      fontWeight: FontWeight.w800,
+                      fontWeight: FontWeight.w700,
                       fontSize: 13,
                       color: AppColors.primaryDark,
                     ),
@@ -387,7 +387,7 @@ class _SuggestPageState extends State<SuggestPage> {
             const SizedBox(height: 18),
             const Text(
               'نتائج أخرى قد تناسبك',
-              style: TextStyle(fontWeight: FontWeight.w800, fontSize: 14),
+              style: TextStyle(fontWeight: FontWeight.w700, fontSize: 14),
             ),
             const SizedBox(height: 10),
             ...suggestions.skip(1).map(
@@ -448,7 +448,7 @@ class _QuestionCard extends StatelessWidget {
             textAlign: TextAlign.center,
             style: const TextStyle(
               color: Colors.white,
-              fontWeight: FontWeight.w800,
+              fontWeight: FontWeight.w700,
               fontSize: 15,
               height: 1.3,
             ),
@@ -611,7 +611,7 @@ class _ResultsHeader extends StatelessWidget {
             textAlign: TextAlign.center,
             style: TextStyle(
               color: Colors.white,
-              fontWeight: FontWeight.w800,
+              fontWeight: FontWeight.w700,
               fontSize: 17,
             ),
           ),
@@ -657,7 +657,7 @@ class _SuggestionCard extends StatelessWidget {
                   'لماذا يناسبك؟',
                   style: TextStyle(
                     color: AppColors.gold,
-                    fontWeight: FontWeight.w800,
+                    fontWeight: FontWeight.w700,
                     fontSize: 11,
                   ),
                 ),

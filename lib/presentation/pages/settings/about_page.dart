@@ -20,7 +20,7 @@ class AboutPage extends StatelessWidget {
           Text(
             AppConstants.appName,
             textAlign: TextAlign.center,
-            style: TextStyle(fontWeight: FontWeight.w800, fontSize: 22),
+            style: TextStyle(fontWeight: FontWeight.w700, fontSize: 22),
           ),
           SizedBox(height: 8),
           Text(

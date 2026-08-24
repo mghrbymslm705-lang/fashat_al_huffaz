@@ -32,7 +32,7 @@ class InfoChip extends StatelessWidget {
             label,
             style: TextStyle(
               fontSize: 11.5,
-              fontWeight: FontWeight.w600,
+              fontWeight: FontWeight.w400,
               color: color,
             ),
           ),

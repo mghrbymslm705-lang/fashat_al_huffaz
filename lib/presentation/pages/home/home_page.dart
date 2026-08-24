@@ -130,9 +130,8 @@ class _HomeHeader extends StatelessWidget {
               Text(
                 'فسحة الحفّاظ',
                 style: TextStyle(
-                  fontWeight: FontWeight.w800,
+                  fontWeight: FontWeight.w700,
                   fontSize: 20,
-                  letterSpacing: -0.3,
                   color: isDark ? Colors.white : AppColors.textPrimary,
                 ),
               ),
@@ -142,7 +141,7 @@ class _HomeHeader extends StatelessWidget {
                 style: TextStyle(
                   color: AppColors.textSecondary.withValues(alpha: 0.8),
                   fontSize: 11.5,
-                  fontWeight: FontWeight.w500,
+                  fontWeight: FontWeight.w400,
                 ),
               ),
             ],
@@ -242,7 +241,7 @@ class _HeroSuggestBanner extends StatelessWidget {
                               color: Colors.white,
                               fontSize: 11.5,
                               height: 1.4,
-                              fontWeight: FontWeight.w500,
+                              fontWeight: FontWeight.w400,
                             ),
                           ),
                         ],
@@ -439,7 +438,7 @@ class _ContinueCard extends StatelessWidget {
                             vertical: 8,
                           ),
                           textStyle: const TextStyle(
-                            fontWeight: FontWeight.w800,
+                            fontWeight: FontWeight.w700,
                             fontSize: 12.5,
                           ),
                         ),
@@ -538,7 +537,7 @@ class _StatsBar extends StatelessWidget {
                   Text(
                     '${s.value}',
                     style: TextStyle(
-                      fontWeight: FontWeight.w800,
+                      fontWeight: FontWeight.w700,
                       fontSize: 16,
                       color: s.color,
                     ),
@@ -547,7 +546,7 @@ class _StatsBar extends StatelessWidget {
                   Text(
                     s.label,
                     style: const TextStyle(
-                      fontWeight: FontWeight.w500,
+                      fontWeight: FontWeight.w400,
                       fontSize: 11,
                       color: AppColors.textSecondary,
                     ),
@@ -766,7 +765,7 @@ class _ChoiceOfDayCard extends StatelessWidget {
                             vertical: 8,
                           ),
                           textStyle: const TextStyle(
-                            fontWeight: FontWeight.w800,
+                            fontWeight: FontWeight.w700,
                             fontSize: 12.5,
                           ),
                         ),
@@ -874,7 +873,7 @@ class _SuggestedCard extends StatelessWidget {
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           style: const TextStyle(
-                            fontWeight: FontWeight.w800,
+                            fontWeight: FontWeight.w700,
                             fontSize: 13.5,
                           ),
                         ),

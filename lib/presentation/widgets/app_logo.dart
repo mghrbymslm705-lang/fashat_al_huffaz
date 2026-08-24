@@ -54,7 +54,7 @@ class AppLogo extends StatelessWidget {
                           'فسحة الحفّاظ',
                           style: TextStyle(
                             fontFamily: 'Tajawal',
-                            fontWeight: FontWeight.w800,
+                            fontWeight: FontWeight.w700,
                             fontSize: size * 0.105,
                             color: Colors.white,
                           ),
