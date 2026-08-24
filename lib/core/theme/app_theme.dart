@@ -10,7 +10,7 @@ class AppTheme {
   AppTheme._();
 
   /// اسم خط التطبيق (مُضمّن، يعمل دون إنترنت).
-  static const String fontFamily = 'IBMPlexSansArabic';
+  static const String fontFamily = 'Amiri';
 
   /// نصف قطر البطاقات الكبيرة.
   static const double cardRadius = 20;

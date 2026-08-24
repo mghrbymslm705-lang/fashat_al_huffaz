@@ -53,7 +53,7 @@ class AppLogo extends StatelessWidget {
                         child: Text(
                           'فسحة الحفّاظ',
                           style: TextStyle(
-                            fontFamily: 'IBMPlexSansArabic',
+                            fontFamily: 'Amiri',
                             fontWeight: FontWeight.w700,
                             fontSize: size * 0.105,
                             color: Colors.white,

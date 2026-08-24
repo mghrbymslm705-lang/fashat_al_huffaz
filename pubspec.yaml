@@ -76,9 +76,7 @@ flutter:
     - assets/icon/
 
   fonts:
-    - family: IBMPlexSansArabic
+    - family: Amiri
       fonts:
-        - asset: assets/fonts/IBMPlexSansArabic-Regular.ttf
+        - asset: assets/fonts/Amiri-Regular.ttf
           weight: 400
-        - asset: assets/fonts/IBMPlexSansArabic-Bold.ttf
-          weight: 700
