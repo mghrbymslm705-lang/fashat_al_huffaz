@@ -1,11 +1,13 @@
 {
     "name": "فسحة الحفّاظ",
     "short_name": "فسحة الحفّاظ",
+    "description": "مكتبة الألعاب والأنشطة التربوية لحلقات تحفيظ القرآن الكريم. إعداد: كتاب حي - جوهرة لتعليم القرآن الكريم.",
+    "lang": "ar",
+    "dir": "rtl",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#16A34A",
     "theme_color": "#16A34A",
-    "description": "مكتبة الألعاب والأنشطة التربوية لحلقات تحفيظ القرآن الكريم. إعداد: كتاب حي - جوهرة لتعليم القرآن الكريم.",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [

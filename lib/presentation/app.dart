@@ -46,17 +46,23 @@ class FashatApp extends StatelessWidget {
             themeMode: settings.themeMode,
             locale: const Locale('ar'),
             supportedLocales: const [Locale('ar')],
+            localeResolutionCallback: (locale, supportedLocales) {
+              return const Locale('ar');
+            },
             localizationsDelegates: const [
               GlobalMaterialLocalizations.delegate,
               GlobalWidgetsLocalizations.delegate,
               GlobalCupertinoLocalizations.delegate,
             ],
             builder: (context, child) {
-              return MediaQuery(
-                data: MediaQuery.of(context).copyWith(
-                  textScaler: TextScaler.linear(settings.fontScale),
+              return Directionality(
+                textDirection: TextDirection.rtl,
+                child: MediaQuery(
+                  data: MediaQuery.of(context).copyWith(
+                    textScaler: TextScaler.linear(settings.fontScale),
+                  ),
+                  child: child!,
                 ),
-                child: child!,
               );
             },
             home: const RootShell(),
