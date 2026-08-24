@@ -17,9 +17,9 @@ import 'package:flutter_test/flutter_test.dart';
 ///   assets/icon/app_icon_foreground.png (عناصر فقط بخلفية شفافة للـ adaptive)
 void main() {
   testWidgets('توليد أيقونة التطبيق', (tester) async {
-    // تحميل خط Tajawal حتى يُعرض الاسم العربي فعليًا وليس بصناديق اختبار.
-    final fontData = await rootBundle.load('assets/fonts/Tajawal-Black.ttf');
-    final loader = FontLoader('Tajawal')..addFont(Future.value(fontData));
+    // تحميل خط IBMPlexSansArabic حتى يُعرض الاسم العربي فعليًا وليس بصناديق اختبار.
+    final fontData = await rootBundle.load('assets/fonts/IBMPlexSansArabic-Bold.ttf');
+    final loader = FontLoader('IBMPlexSansArabic')..addFont(Future.value(fontData));
     await loader.load();
 
     const size = 1024.0;

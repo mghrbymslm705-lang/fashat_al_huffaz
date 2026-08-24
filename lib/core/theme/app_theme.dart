@@ -3,14 +3,14 @@ import 'package:flutter/services.dart';
 
 import 'app_colors.dart';
 
-/// إعدادات التصميم العام: Material 3 + خط Tajawal + RTL.
+/// إعدادات التصميم العام: Material 3 + خط IBM Plex Sans Arabic + RTL.
 ///
 /// ثيم حيوي أنيق يجمع بين المرح والتربية والهوية القرآنية.
 class AppTheme {
   AppTheme._();
 
   /// اسم خط التطبيق (مُضمّن، يعمل دون إنترنت).
-  static const String fontFamily = 'Tajawal';
+  static const String fontFamily = 'IBMPlexSansArabic';
 
   /// نصف قطر البطاقات الكبيرة.
   static const double cardRadius = 20;

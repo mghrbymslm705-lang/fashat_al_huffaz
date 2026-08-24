@@ -43,7 +43,6 @@ dependencies:
 
   # تشغيل الصوت في الخلفية
   just_audio: ^0.9.42
-
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -77,9 +76,9 @@ flutter:
     - assets/icon/
 
   fonts:
-    - family: Tajawal
+    - family: IBMPlexSansArabic
       fonts:
-        - asset: assets/fonts/Tajawal-Regular.ttf
+        - asset: assets/fonts/IBMPlexSansArabic-Regular.ttf
           weight: 400
-        - asset: assets/fonts/Tajawal-Bold.ttf
+        - asset: assets/fonts/IBMPlexSansArabic-Bold.ttf
           weight: 700
